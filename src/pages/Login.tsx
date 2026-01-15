@@ -1,8 +1,11 @@
 import React, { FC, useEffect } from 'react'
-import { Typography, Space, Form, Input, Button, Checkbox } from 'antd'
+import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
 import styles from './Register.module.scss'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginService } from '../services/user'
+import { useRequest } from 'ahooks'
+import { setToken } from '../utils/user-token'
 
 const { Title } = Typography
 const USERNAME_KEY = 'USERNAME'
@@ -26,8 +29,26 @@ function getUserFormStorage() {
 }
 
 const Login: FC = () => {
+  const nav = useNavigate()
+  // 登录功能
+  const { run } = useRequest(
+    async values => {
+      const { username, password } = values
+      const data = await loginService(username, password)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess(result) {
+        message.success('登录成功')
+        setToken(result.token)
+        nav('/manage/list')
+      },
+    }
+  )
   function onFinish(value: any) {
     const { username, password, remember } = value || {}
+    run(value)
     if (remember) {
       rememberUser(username, password)
     } else {

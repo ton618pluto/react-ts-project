@@ -1,12 +1,26 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Typography } from 'antd'
 import styles from './Home.module.scss'
+import axios from 'axios'
+// import '../_mock/index'
 
 const { Title, Paragraph } = Typography
 
 const Home: FC = () => {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    // mockjs只能拦截xhr，不能拦截fetch
+    // fetch('/api/test')
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log(data)
+    //   })
+    axios.get('/api/test').then(res => {
+      console.log('res', res.data)
+    })
+  }, [])
 
   return (
     <div className={styles.container}>

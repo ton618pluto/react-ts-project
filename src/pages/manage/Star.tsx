@@ -1,41 +1,18 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import QuestionCard from '../../components/QuestionCard'
 import styles from './common.module.scss'
 import { useTitle } from 'ahooks'
-import { Typography, Empty } from 'antd'
+import { Typography, Empty, Spin } from 'antd'
 import ListSearch from '../../components/ListSearch'
+import { useLoadQuestionListData } from '../../hooks/useLoadQuestionListData'
+import ListPage from '../../components/ListPage'
 const { Title } = Typography
-
-const rawQuestionList = [
-  {
-    _id: 'q1',
-    title: '问卷1',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月10日 13:23',
-  },
-  {
-    _id: 'q2',
-    title: '问卷2',
-    isPublished: true,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月11日 14:23',
-  },
-  {
-    _id: 'q3',
-    title: '问卷3',
-    isPublished: false,
-    isStar: true,
-    answerCount: 5,
-    createdAt: '2月12日 13:23',
-  },
-]
 
 const Star: FC = () => {
   useTitle('小慕问卷 - 星标问卷')
-  const [questionList] = useState(rawQuestionList)
+  const { data, loading } = useLoadQuestionListData({ isStar: true })
+  const { list: questionList = [], total = 100 } = data || {}
+
   return (
     <>
       <div className={styles.header}>
@@ -47,14 +24,22 @@ const Star: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 && <Empty description="暂无数据..."></Empty>}
-        {questionList.length &&
+        {loading && (
+          <div style={{ textAlign: 'center' }}>
+            <Spin></Spin>
+          </div>
+        )}
+        {!loading && questionList.length === 0 && <Empty description="暂无数据..."></Empty>}
+        {!loading &&
+          questionList.length > 0 &&
           questionList.map(item => {
             const { _id } = item
             return <QuestionCard key={_id} {...item}></QuestionCard>
           })}
       </div>
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        <ListPage total={total} />
+      </div>
     </>
   )
 }
