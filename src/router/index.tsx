@@ -36,6 +36,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'list',
+            // index: true,
             element: <List></List>,
           },
           {
@@ -71,3 +72,12 @@ const router = createBrowserRouter([
 ])
 
 export default router
+
+// 其他内容
+export function isLoginOrRegister(pathname: string) {
+  return ['/login', '/register'].includes(pathname) ? true : false
+}
+
+export function isNoNeedLogin(pathname: string) {
+  return ['/', '/login', '/register'].includes(pathname) ? true : false
+}

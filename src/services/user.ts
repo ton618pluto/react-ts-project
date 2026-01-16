@@ -19,7 +19,7 @@ export const registerService = async (username: string, password: string, nickna
 }
 
 // 登录
-type TokenType = {
+export type TokenType = {
   token: string
 }
 export const loginService = async (username: string, password: string) => {
