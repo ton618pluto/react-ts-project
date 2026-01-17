@@ -1,11 +1,8 @@
 import instance from './ajax'
 import { AnyObjType } from './ajax'
+import { UserInfoType } from '@/types/userTypes'
 
 // 获取用户信息
-type UserInfoType = {
-  username: string
-  nickname: string
-}
 export const getUserInfoService = async () => {
   const data = await instance.get<UserInfoType>('/api/user/info')
   return data

@@ -12,7 +12,7 @@ export type AnyObjType = {
 }
 
 class MyRequest {
-  instance: AxiosInstance
+  private instance: AxiosInstance
 
   constructor(config: AxiosRequestConfig) {
     this.instance = axios.create(config)
@@ -31,13 +31,13 @@ class MyRequest {
 
     // 响应拦截器
     this.instance.interceptors.response.use(
-      (res: AxiosResponse) => {
+      (res: AxiosResponse): any => {
         // 强制断言响应数据结构
         const resData = (res.data || {}) as ResType
         const { errno, data, msg } = resData
 
         if (errno === 0) {
-          return data // 直接返回业务数据
+          return data // 直接返回业务数据，这里的data变为any类型了，因为ResType里的data是个泛型
         } else {
           if (msg) message.error(msg)
           // 使用 Promise.reject 抛出错误，触发 catch

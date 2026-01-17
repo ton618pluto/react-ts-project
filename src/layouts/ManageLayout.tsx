@@ -9,16 +9,6 @@ import { PlusOutlined, BarsOutlined, StarOutlined, DeleteOutlined } from '@ant-d
 const ManageLayout: FC = () => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  // const [loading, setLoading] = useState(false)
-
-  // async function handleCreateClick() {
-  //   setLoading(true)
-  //   const data = await createQuestionService()
-  //   message.success(`创建问卷${data.id}成功`)
-  //   navigate(`/question/edit/${data.id}`)
-  //   setLoading(false)
-  //   console.log('data', data)
-  // }
 
   const { loading, run: handleCreateClick } = useRequest(createQuestionService, {
     manual: true,

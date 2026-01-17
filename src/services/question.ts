@@ -1,11 +1,9 @@
 import instance from './ajax'
 import { AnyObjType } from './ajax'
 
+import { SingleQuestionType } from '@/types/questionTypes'
+
 // 获取当个问卷信息
-type SingleQuestionType = {
-  id: string
-  title: string
-}
 
 export async function getQuestionService(id: string): Promise<SingleQuestionType> {
   const url = `/api/question/${id}`

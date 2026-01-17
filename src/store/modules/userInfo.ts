@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { UserInfoType } from '@/types/userTypes'
 
-type UserInfoType = {
-  username: string
-  nickname: string
-}
+// 初始化状态
 
 const inital: UserInfoType = {
   username: '',

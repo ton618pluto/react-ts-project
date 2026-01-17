@@ -9,8 +9,7 @@ const QuestionLayout: FC = () => {
   useNavPage(waitingLoading)
 
   return (
-    <>
-      <p>QuesitonLayout</p>
+    <div style={{ height: '100vh' }}>
       {waitingLoading ? (
         <div
           style={{
@@ -27,7 +26,7 @@ const QuestionLayout: FC = () => {
       ) : (
         <Outlet></Outlet>
       )}
-    </>
+    </div>
   )
 }
 

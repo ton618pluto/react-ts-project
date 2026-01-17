@@ -3,37 +3,37 @@
 import { useParams } from 'react-router-dom'
 import { getQuestionService } from '../services/question'
 import { useRequest } from 'ahooks'
+import { useAppDispatch } from '@/store/types'
+import { useEffect } from 'react'
+import { resetComponents } from '@/store/modules/componentsReducer'
 
 // 加载问卷数据
 export function useLoadQuestionData() {
   const { id = '' } = useParams()
-  //   const [loading, setLoading] = useState(true)
-  //   const [questionData, setQuestionData] = useState({})
+  const dispatch = useAppDispatch()
 
-  //   useEffect(() => {
-  //     async function fn() {
-  //       try {
-  //         const data = await getQuestionService(id)
-  //         setQuestionData(data)
-  //         setLoading(false)
-  //         console.log('res', data)
-  //       } catch (error: any) {
-  //         console.log(new Error(error))
-  //       }
-  //     }
+  const { loading, run, data, error } = useRequest(
+    async () => {
+      const data = await getQuestionService(id)
+      return data
+    },
+    {
+      manual: true,
+    }
+  )
 
-  //     fn()
-  //   }, [])
-  async function load() {
-    const data = await getQuestionService(id)
-    return data
-  }
+  useEffect(() => {
+    if (!data) return
+    const { componentsList } = data
+    dispatch(resetComponents({ componentsList }))
+  }, [data])
 
-  const { data, error, loading } = useRequest(load)
+  useEffect(() => {
+    run()
+  }, [id])
 
   return {
     loading,
-    data,
     error,
   }
 }
