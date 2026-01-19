@@ -1,6 +1,7 @@
 import Component from './index'
 // props的结构
 import { QuestionInputPropsType } from '@/types/questionTypes'
+import InputPropComponent from './InputPropComponent'
 
 // props的默认值
 export const QuestionInputDefault: QuestionInputPropsType = {
@@ -13,5 +14,6 @@ export default {
   title: '输入框',
   type: 'questionInput',
   Component: Component,
+  PropComponent: InputPropComponent,
   defaultProps: QuestionInputDefault,
 }

@@ -5,14 +5,17 @@ import { FC } from 'react'
 export type QuestionInputPropsType = {
   title?: string
   placeholder?: string
+  onChange?: (props: QuestionInputPropsType) => void
 }
 
 export type QuestionTitlePropsType = {
   title?: string
   level?: 1 | 2 | 3
   isCenter?: boolean
+  onChange?: (props: QuestionTitlePropsType) => void
 }
 
+// 问卷中组件的Props的类型
 export type ComponentPropsType = QuestionInputPropsType | QuestionTitlePropsType
 
 // 后端返回的单个组件的数据格式
@@ -36,5 +39,6 @@ export type ComponentConfType = {
   title: string
   type: string
   Component: FC<ComponentPropsType>
+  PropComponent: FC<ComponentPropsType>
   defaultProps: ComponentPropsType
 }

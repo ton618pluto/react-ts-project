@@ -1,7 +1,12 @@
 import { useAppSelector } from '@/store/types'
 
 export function useGetComponentInfo() {
-  const components = useAppSelector(state => state.components)
+  const { componentsList = [], selectedId } = useAppSelector(state => state.components)
+  const selectedComponent = componentsList.find(item => item.fe_id === selectedId)
 
-  return components
+  return {
+    componentsList,
+    selectedComponent,
+    selectedId,
+  }
 }

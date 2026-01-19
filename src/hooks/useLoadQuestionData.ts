@@ -25,7 +25,12 @@ export function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return
     const { componentsList } = data
-    dispatch(resetComponents({ componentsList }))
+
+    let selectedId = ''
+    if (componentsList.length) {
+      selectedId = componentsList[0].fe_id
+    }
+    dispatch(resetComponents({ componentsList, selectedId }))
   }, [data])
 
   useEffect(() => {

@@ -7,6 +7,7 @@ const { Title } = Typography
 
 const QuestionTitle: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType) => {
   const { title, level, isCenter } = { ...QuestionTitleDefault, ...props }
+  console.log(123)
 
   function getFontSize() {
     switch (level) {
