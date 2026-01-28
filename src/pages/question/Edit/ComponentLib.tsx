@@ -15,15 +15,17 @@ const ComponentLib: FC = () => {
         const { groupId, groupName, components } = group
 
         function getComponent(componentConf: ComponentConfType) {
-          const { title, type, Component, defaultProps } = componentConf
+          const { text, type, Component, defaultProps } = componentConf
           const dispatch = useAppDispatch()
 
           function handleAddClick() {
             dispatch(
               addComponent({
                 fe_id: nanoid(),
-                title,
+                text,
                 type,
+                isHidden: false,
+                isLocked: false,
                 props: defaultProps,
               })
             )

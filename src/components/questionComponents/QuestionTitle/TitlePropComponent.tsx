@@ -3,16 +3,16 @@ import { QuestionTitlePropsType } from '@/types/questionTypes'
 import { Form, Input, Select, Checkbox } from 'antd'
 
 const TitlePropComponent: FC<QuestionTitlePropsType> = (props: QuestionTitlePropsType) => {
-  const { title, level, isCenter } = props
+  const { text, level, isCenter, isLocked } = props
   const [form] = Form.useForm()
 
   useEffect(() => {
     form.setFieldsValue({
-      title,
+      text,
       level,
       isCenter,
     })
-  }, [title, level, isCenter])
+  }, [text, level, isCenter])
 
   // 表单值修改时触发
   function handleValueChange() {
@@ -26,10 +26,11 @@ const TitlePropComponent: FC<QuestionTitlePropsType> = (props: QuestionTitleProp
     <Form
       form={form}
       layout="vertical"
-      initialValues={{ title, level, isCenter }}
+      initialValues={{ text, level, isCenter }}
       onValuesChange={handleValueChange}
+      disabled={isLocked}
     >
-      <Form.Item name="title" label="标题内容">
+      <Form.Item name="text" label="标题内容">
         <Input />
       </Form.Item>
       <Form.Item name="level" label="层级">

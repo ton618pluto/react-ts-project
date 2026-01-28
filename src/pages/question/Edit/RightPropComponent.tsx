@@ -12,24 +12,29 @@ const NoProp: FC<NoProps> = (props: NoProps) => {
   return <div style={{ textAlign: 'center' }}>{props.msg}</div>
 }
 
-const PropComponent: FC = () => {
+const RightPropComponent: FC = () => {
   const { selectedComponent, selectedId } = useGetComponentInfo()
   const dispatch = useAppDispatch()
 
   if (!selectedComponent) return <NoProp msg="没有选中画布中的一个组件"></NoProp>
-  const { type, props } = selectedComponent
+  const { type, props, isLocked, isHidden } = selectedComponent
   const componentConf = getComponentConfByType(type)
   if (!componentConf) return <NoProp msg="没有找到画布中组件的上下文信息"></NoProp>
   const { PropComponent } = componentConf
 
   function handlePropsChange(newProps: ComponentPropsType) {
-    console.log('newProps', newProps, selectedId)
     if (!selectedComponent) return <NoProp msg="没有选中画布中的一个组件"></NoProp>
 
     dispatch(changeComponentProp({ fe_id: selectedId, newProps }))
   }
 
-  return <PropComponent {...props} onChange={handlePropsChange}></PropComponent>
+  return (
+    <PropComponent
+      {...props}
+      onChange={handlePropsChange}
+      isLocked={isLocked || isHidden}
+    ></PropComponent>
+  )
 }
 
-export default PropComponent
+export default RightPropComponent

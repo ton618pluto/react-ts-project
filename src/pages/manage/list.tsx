@@ -30,7 +30,7 @@ const List: FC = () => {
   }, [keyword])
 
   // 真正加载
-  const { run: load, loading } = useRequest(
+  const { run: loadData, loading } = useRequest(
     async () => {
       const data = await getQuestionListService({
         page,
@@ -43,11 +43,13 @@ const List: FC = () => {
       return data
     },
     {
-      manual: true,
+      manual: true, // 异步请求函数设置为手动调用
       onSuccess(result) {
         const { list: newList = [], total = 0 } = result
+        // 拼接旧数据和新数据
         setList([...list, ...newList])
         setTotal(total)
+        // 页号+1
         setPage(page + 1)
       },
     }
@@ -56,18 +58,20 @@ const List: FC = () => {
   // 尝试加载
   const { run: tryLoadMore } = useDebounceFn(
     () => {
-      const element = loadMoreRef.current
+      console.log(123)
+
+      const element = loadMoreRef.current // 底部加载更多的文字DOM元素
       if (element === null) return
       const domRect = element.getBoundingClientRect()
       const bottom = domRect.bottom // 获取元素底部距离可视窗口顶部的距离
       if (bottom < document.body.clientHeight) {
         // document.body.clientHeight为可视窗口的高度
 
-        load()
+        loadData()
         setStarted(true)
       }
     },
-    { wait: 300 }
+    { wait: 600 }
   )
 
   // 当页面加载或者url参数（keyword）发生变化时执行

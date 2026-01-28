@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Tabs } from 'antd'
 import { FileTextOutlined, SettingOutlined } from '@ant-design/icons'
-import PropComponent from './PropComponent'
+import RightPropComponent from './RightPropComponent'
 
 const RightPanel: FC = () => {
   const tabsItem = [
@@ -13,7 +13,7 @@ const RightPanel: FC = () => {
           属性
         </span>
       ),
-      children: <PropComponent></PropComponent>,
+      children: <RightPropComponent></RightPropComponent>,
     },
     {
       key: 'setting',
@@ -26,7 +26,7 @@ const RightPanel: FC = () => {
       children: <div>页面设置</div>,
     },
   ]
-  return <Tabs defaultActiveKey="componentLib" items={tabsItem}></Tabs>
+  return <Tabs defaultActiveKey="prop" items={tabsItem}></Tabs>
 }
 
 export default RightPanel

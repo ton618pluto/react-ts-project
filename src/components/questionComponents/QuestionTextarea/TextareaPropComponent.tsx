@@ -1,8 +1,10 @@
 import React, { FC, useEffect } from 'react'
-import { QuestionInputPropsType } from '@/types/questionTypes'
+import { QuestionTextareaPropsType } from '@/types/questionTypes'
 import { Form, Input } from 'antd'
 
-const InputPropComponent: FC<QuestionInputPropsType> = (props: QuestionInputPropsType) => {
+const { TextArea } = Input
+
+const TextareaPropComponent: FC<QuestionTextareaPropsType> = (props: QuestionTextareaPropsType) => {
   const { text, placeholder, isLocked } = props
 
   const [form] = Form.useForm()
@@ -31,10 +33,10 @@ const InputPropComponent: FC<QuestionInputPropsType> = (props: QuestionInputProp
         <Input />
       </Form.Item>
       <Form.Item name="placeholder" label="Placeholder">
-        <Input />
+        <TextArea />
       </Form.Item>
     </Form>
   )
 }
 
-export default InputPropComponent
+export default TextareaPropComponent

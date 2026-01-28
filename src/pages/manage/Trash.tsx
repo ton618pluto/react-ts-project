@@ -117,7 +117,7 @@ const Trash: FC = () => {
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <Title level={3}>星标问卷</Title>
+          <Title level={3}>回收站</Title>
         </div>
         <div className={styles.right}>
           <ListSearch />

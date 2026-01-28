@@ -1,6 +1,7 @@
 .canvas{
-    height: 100%;
-    overflow: hidden;
+    // height: 100%;
+    overflow: auto;
+    // background-color: wheat;
 
     .component-wrapper{
         margin: 12px;
@@ -20,4 +21,9 @@
 
 .selected{
     border-color: #1890ff !important;
+}
+
+.locked{
+    opacity: 0.5;
+    pointer-events: none;
 }

@@ -3,26 +3,86 @@ import { FC } from 'react'
 
 // Question模块中各个组件的props的结构
 export type QuestionInputPropsType = {
-  title?: string
+  text?: string
   placeholder?: string
+  isLocked?: boolean
   onChange?: (props: QuestionInputPropsType) => void
 }
 
+export type QuestionTextareaPropsType = {
+  text?: string
+  placeholder?: string
+  isLocked?: boolean
+  onChange?: (props: QuestionTextareaPropsType) => void
+}
+
 export type QuestionTitlePropsType = {
-  title?: string
+  text?: string
   level?: 1 | 2 | 3
   isCenter?: boolean
+  isLocked?: boolean
   onChange?: (props: QuestionTitlePropsType) => void
 }
 
+export type QuestionPragraphPropsType = {
+  text?: string
+  isCenter?: boolean
+  isLocked?: boolean
+  onChange?: (props: QuestionPragraphPropsType) => void
+}
+
+export type QuestionInfoPropsType = {
+  text?: string
+  desc?: string
+  isLocked?: boolean
+  onChange?: (props: QuestionInfoPropsType) => void
+}
+
+export type OptionType = {
+  value: string
+  text: string
+}
+
+export type QuestionRadioPropsType = {
+  title?: string
+  isVertical?: boolean
+  value?: string
+  options?: OptionType[]
+  isLocked?: boolean
+  onChange?: (props: QuestionRadioPropsType) => void
+}
+
+export type CheckboxOptionType = {
+  value: string
+  text: string
+  checked: boolean
+}
+
+export type QuestionCheckboxPropsType = {
+  title?: string
+  isVertical?: boolean
+  list?: CheckboxOptionType[]
+
+  // 用于 PropComponent
+  onChange?: (newProps: QuestionCheckboxPropsType) => void
+  isLocked?: boolean
+}
+
 // 问卷中组件的Props的类型
-export type ComponentPropsType = QuestionInputPropsType | QuestionTitlePropsType
+export type ComponentPropsType =
+  | QuestionInputPropsType
+  | QuestionTextareaPropsType
+  | QuestionTitlePropsType
+  | QuestionPragraphPropsType
+  | QuestionInfoPropsType
 
 // 后端返回的单个组件的数据格式
 export type ComponentInfoType = {
   fe_id: string
-  title: string
+  text: string
   type: string
+  isHidden: boolean
+  isLocked: boolean
   props: ComponentPropsType
 }
 
@@ -36,7 +96,7 @@ export type SingleQuestionType = {
 
 // 问卷组件的类型上下文表示
 export type ComponentConfType = {
-  title: string
+  text: string
   type: string
   Component: FC<ComponentPropsType>
   PropComponent: FC<ComponentPropsType>
