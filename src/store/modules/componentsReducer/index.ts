@@ -9,6 +9,7 @@ import {
 } from './utils'
 import cloneDeep from 'lodash.clonedeep'
 import { nanoid } from 'nanoid'
+import { arrayMove } from '@dnd-kit/sortable'
 
 // 初始化状态
 export type ComponentStateType = {
@@ -28,7 +29,7 @@ const componentStore = createSlice({
   initialState: INIT_STATE,
   reducers: {
     // 重置问卷的组件列表
-    resetComponents(state, action: PayloadAction<ComponentStateType>) {
+    resetComponents(state: ComponentStateType, action: PayloadAction<ComponentStateType>) {
       return action.payload
     },
     // 改变画布中选中的组件
@@ -68,29 +69,33 @@ const componentStore = createSlice({
       state: ComponentStateType,
       action: PayloadAction<{ fe_id: string; isHidden: boolean }>
     ) {
-      const { selectedId: cur_id, componentsList } = state
+      const { componentsList } = state
+      const { isHidden, fe_id: cur_id } = action.payload
       const cur_component = componentsList.find(item => item.fe_id === cur_id)
+
       if (!cur_component) return
 
       // 改变selectedId
       let nextId = ''
-      const { isHidden, fe_id } = action.payload
+
       if (isHidden) {
         // 要隐藏
         nextId = getNextSelectedIdByDeleteId(cur_id, componentsList)
       } else {
         // 要显示
-        nextId = fe_id
+        nextId = cur_id
       }
 
       state.selectedId = nextId
 
       cur_component.isHidden = isHidden
+      // console.log('cur_component.isHidden', cur_component.isHidden)
     },
     // 锁定或解锁一个组件
-    changeComponentLock(state: ComponentStateType) {
-      const { selectedId, componentsList } = state
-      const component = componentsList.find(item => item.fe_id === selectedId)
+    changeComponentLock(state: ComponentStateType, action: PayloadAction<{ fe_id: string }>) {
+      const { componentsList } = state
+      const { fe_id } = action.payload
+      const component = componentsList.find(item => item.fe_id === fe_id)
       if (component) {
         component.isLocked = !component.isLocked
       }
@@ -124,6 +129,28 @@ const componentStore = createSlice({
       const next_id = getNextSelectedId(selectedId, componentsList)
       state.selectedId = next_id
     },
+    // 修改标题
+    changeComponentTitle(
+      state: ComponentStateType,
+      action: PayloadAction<{ fe_id: string; title: string }>
+    ) {
+      const { fe_id, title } = action.payload
+      const { componentsList } = state
+      const compo = componentsList.find(item => item.fe_id === fe_id)
+      if (compo) {
+        compo.title = title
+      }
+    },
+    // 移动组件位置
+    moveComponentPosition(
+      state: ComponentStateType,
+      action: PayloadAction<{ oldIndex: number; newIndex: number }>
+    ) {
+      const { componentsList } = state
+      const { oldIndex, newIndex } = action.payload
+
+      state.componentsList = arrayMove(componentsList, oldIndex, newIndex)
+    },
   },
 })
 
@@ -139,5 +166,7 @@ export const {
   pasteComponent,
   selectPreComponent,
   selectNextComponent,
+  changeComponentTitle,
+  moveComponentPosition,
 } = componentStore.actions
 export default componentStore.reducer

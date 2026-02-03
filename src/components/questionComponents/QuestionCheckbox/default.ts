@@ -13,7 +13,7 @@ export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
 }
 
 const QuestionCheckboxConf: ComponentConfType = {
-  text: '多选框',
+  title: '多选框',
   type: 'questionCheckbox',
   Component: QuestionCheckbox,
   PropComponent: CheckboxPropComponent,

@@ -3,7 +3,7 @@ module.exports = {
   arrowParens: "avoid",
   // 括号内部不要出现空格
   bracketSpacing: true,
-  // 行结束符使用 Unix 格式
+  // 行结束符使用 Unix 格式（windows下lf会报错）
   endOfLine: 'lf',
   // true: 把 > 放在最后一行末尾，而不是单独起一行
   bracketSameLine: false,

@@ -9,7 +9,7 @@ export const QuestionParagraphDefault: QuestionPragraphPropsType = {
 
 // Title组件的配置
 const QuestionParagraphConf: ComponentConfType = {
-  text: '段落',
+  title: '段落',
   type: 'questionParagraph',
   Component: Component,
   PropComponent: ParagraphPropComponent,

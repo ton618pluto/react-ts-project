@@ -1,5 +1,5 @@
 /**
- * 获取被删除组件的下一个组件的fe_id作为selectedId
+ * 获取被隐藏组件的下一个组件的fe_id作为selectedId
  * @param fe_id  当前的id
  * @param componentList 组件列表
  */
@@ -13,6 +13,7 @@ export function getNextSelectedIdByDeleteId(
   // 只查看没有被隐藏的组件
   const visibleComponentsList = componentsList.filter(item => !item.isHidden)
   const idx = visibleComponentsList.findIndex(item => item.fe_id === fe_id)
+
   if (idx < 0) return ''
 
   const length = visibleComponentsList.length
@@ -28,6 +29,43 @@ export function getNextSelectedIdByDeleteId(
       return visibleComponentsList[idx + 1].fe_id
     }
   }
+}
+
+// 获取当前索引后面的下（或上）一个没有被隐藏的组件的id
+export function getNextSelectedIdxByCurIdx(
+  cur_idx: number,
+  componentsList: ComponentsListType
+): number {
+  let next_idx = -1
+
+  for (let i = cur_idx + 1; i < componentsList.length; i++) {
+    if (componentsList[i].isHidden) {
+      continue
+    } else {
+      next_idx = i
+      break
+    }
+  }
+
+  return next_idx
+}
+
+export function getPreSelectedIdxByCurIdx(
+  cur_idx: number,
+  componentsList: ComponentsListType
+): number {
+  let pre_idx = -1
+
+  for (let i = cur_idx - 1; i >= 0; i--) {
+    if (componentsList[i].isHidden) {
+      continue
+    } else {
+      pre_idx = i
+      break
+    }
+  }
+
+  return pre_idx
 }
 
 /**

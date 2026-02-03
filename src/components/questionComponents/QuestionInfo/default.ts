@@ -11,7 +11,7 @@ export const QuestionInfoDefault: QuestionInfoPropsType = {
 
 // Input组件的配置
 const QuestionInfoConf: ComponentConfType = {
-  text: '',
+  title: '',
   type: 'questionInfo',
   Component: Component,
   PropComponent: InfoPropComponent,

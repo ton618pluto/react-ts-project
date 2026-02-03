@@ -58,7 +58,7 @@ const List: FC = () => {
   // 尝试加载
   const { run: tryLoadMore } = useDebounceFn(
     () => {
-      console.log(123)
+      // console.log(123)
 
       const element = loadMoreRef.current // 底部加载更多的文字DOM元素
       if (element === null) return

@@ -79,7 +79,7 @@ export type ComponentPropsType =
 // 后端返回的单个组件的数据格式
 export type ComponentInfoType = {
   fe_id: string
-  text: string
+  title: string
   type: string
   isHidden: boolean
   isLocked: boolean
@@ -91,12 +91,15 @@ export type ComponentsListType = ComponentInfoType[]
 export type SingleQuestionType = {
   id: string
   title: string
+  desc: string
+  js: string
+  css: string
   componentsList: ComponentsListType
 }
 
 // 问卷组件的类型上下文表示
 export type ComponentConfType = {
-  text: string
+  title: string
   type: string
   Component: FC<ComponentPropsType>
   PropComponent: FC<ComponentPropsType>

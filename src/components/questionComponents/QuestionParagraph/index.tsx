@@ -6,7 +6,7 @@ import { Typography } from 'antd'
 const { Paragraph } = Typography
 
 const QuestionParagraph: FC<QuestionPragraphPropsType> = (props: QuestionPragraphPropsType) => {
-  const { text, isCenter } = { ...QuestionParagraphDefault, ...props }
+  const { text = '', isCenter } = { ...QuestionParagraphDefault, ...props }
   // const t = text.replaceAll('\n', '<br>')
   const textList = text.split('\n')
 

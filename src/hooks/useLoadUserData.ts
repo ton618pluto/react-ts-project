@@ -3,7 +3,7 @@ import { useRequest } from 'ahooks'
 import { useGetUserInfo } from './useGetUserInfo'
 import { getUserInfoService } from '@/services/user'
 import { useAppDispatch } from '@/store/types'
-import { loginReducer } from '@/store/modules/userInfo'
+import { loginReducer } from '@/store/modules/userReducer'
 
 export function useLoadUserData() {
   const [waitingLoading, setWaitingLoading] = useState(true)

@@ -11,7 +11,7 @@ export const QuestionTextareaDefault: QuestionTextareaPropsType = {
 
 // Input组件的配置
 const QuestionTextareaConf: ComponentConfType = {
-  text: '多行文本输入框',
+  title: '多行文本输入框',
   type: 'questionTextarea',
   Component: Component,
   PropComponent: TextareaPropComponent,

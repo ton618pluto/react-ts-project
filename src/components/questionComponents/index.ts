@@ -20,7 +20,7 @@ export const componentConfGroup = [
     components: [QuestionInputConf, QuestionTextareaConf],
   },
   {
-    groupId: 'inputGroup',
+    groupId: 'selectGroup',
     groupName: '用户选择',
     components: [QutstionRadioConf, QuestionCheckboxConf],
   },

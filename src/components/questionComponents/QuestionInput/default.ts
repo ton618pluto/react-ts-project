@@ -11,7 +11,7 @@ export const QuestionInputDefault: QuestionInputPropsType = {
 
 // Input组件的配置
 const QuestionInputConf: ComponentConfType = {
-  text: '输入框',
+  title: '输入框',
   type: 'questionInput',
   Component: Component,
   PropComponent: InputPropComponent,

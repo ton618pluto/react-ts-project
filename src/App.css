@@ -40,3 +40,8 @@
 body{
   min-width: 1500px;
 }
+
+/* dnd-kit 拖拽排序 */
+div[role="button"]{
+  outline:0;
+}

@@ -14,7 +14,7 @@ export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
 }
 
 const QutstionRadioConf: ComponentConfType = {
-  text: '单选框',
+  title: '单选框',
   type: 'questionRadio',
   Component: QutstionRadio,
   PropComponent: RadioPropComponent,

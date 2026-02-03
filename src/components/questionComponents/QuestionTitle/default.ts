@@ -10,7 +10,7 @@ export const QuestionTitleDefault: QuestionTitlePropsType = {
 
 // Title组件的配置
 const QuestionTitleConf: ComponentConfType = {
-  text: '标题',
+  title: '标题',
   type: 'questionTitle',
   Component: Component,
   PropComponent: TitlePropComponent,

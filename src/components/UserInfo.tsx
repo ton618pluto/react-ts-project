@@ -7,7 +7,7 @@ import { UserOutlined } from '@ant-design/icons'
 import { Button, message } from 'antd'
 import { removeToken } from '@/utils/user-token'
 import { useDispatch } from 'react-redux'
-import { logoutReducer } from '@/store/modules/userInfo'
+import { logoutReducer } from '@/store/modules/userReducer'
 
 const UserInfo: FC = () => {
   // const { data } = useRequest(getUserInfoService)

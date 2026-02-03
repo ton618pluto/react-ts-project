@@ -6,6 +6,8 @@ import { useRequest } from 'ahooks'
 import { useAppDispatch } from '@/store/types'
 import { useEffect } from 'react'
 import { resetComponents } from '@/store/modules/componentsReducer'
+import { resetPageInfo } from '@/store/modules/pageInfoReducer'
+import { ActionCreators } from 'redux-undo'
 
 // 加载问卷数据
 export function useLoadQuestionData() {
@@ -15,6 +17,7 @@ export function useLoadQuestionData() {
   const { loading, run, data, error } = useRequest(
     async () => {
       const data = await getQuestionService(id)
+
       return data
     },
     {
@@ -24,13 +27,19 @@ export function useLoadQuestionData() {
 
   useEffect(() => {
     if (!data) return
-    const { componentsList } = data
+    const { componentsList, title, desc, js, css } = data
 
-    let selectedId = ''
-    if (componentsList.length) {
-      selectedId = componentsList[0].fe_id
-    }
+    const selectedId = ''
+    // if (componentsList.length) {
+    //   selectedId = componentsList[0].fe_id
+    // }
+
+    // 设置页面相关信息
+    dispatch(resetPageInfo({ title, desc, js, css }))
+
+    // 设置组件信息
     dispatch(resetComponents({ componentsList, selectedId, copiedComponent: null }))
+    dispatch(ActionCreators.clearHistory()) // 最好是清空它
   }, [data])
 
   useEffect(() => {
