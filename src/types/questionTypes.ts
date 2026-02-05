@@ -113,6 +113,7 @@ export type QuestionCheckboxStatPropsType = {
   stat: Array<StatType>
 }
 
+// 所有统计组件的联合类型
 export type QuestionStatPropsType = QuestionRadioStatPropsType | QuestionCheckboxStatPropsType
 
 // 问卷组件的类型上下文表示
