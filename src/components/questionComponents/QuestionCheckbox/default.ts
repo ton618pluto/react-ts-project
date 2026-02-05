@@ -1,6 +1,7 @@
 import { QuestionCheckboxPropsType, ComponentConfType } from '@/types/questionTypes'
 import QuestionCheckbox from './index'
 import CheckboxPropComponent from './CheckboxPropComponent'
+import CheckboxStatComponent from './CheckboxStatComponent'
 
 export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
   title: '多选题标题',
@@ -18,6 +19,7 @@ const QuestionCheckboxConf: ComponentConfType = {
   Component: QuestionCheckbox,
   PropComponent: CheckboxPropComponent,
   defaultProps: QuestionCheckboxDefaultProps,
+  StatComponent: CheckboxStatComponent,
 }
 
 export default QuestionCheckboxConf

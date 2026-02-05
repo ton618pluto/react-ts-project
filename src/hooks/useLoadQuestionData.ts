@@ -27,7 +27,7 @@ export function useLoadQuestionData() {
 
   useEffect(() => {
     if (!data) return
-    const { componentsList, title, desc, js, css } = data
+    const { componentsList, title, desc, js, css, isPublished } = data
 
     const selectedId = ''
     // if (componentsList.length) {
@@ -35,7 +35,7 @@ export function useLoadQuestionData() {
     // }
 
     // 设置页面相关信息
-    dispatch(resetPageInfo({ title, desc, js, css }))
+    dispatch(resetPageInfo({ title, desc, js, css, isPublished }))
 
     // 设置组件信息
     dispatch(resetComponents({ componentsList, selectedId, copiedComponent: null }))

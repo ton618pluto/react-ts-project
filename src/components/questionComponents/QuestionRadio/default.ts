@@ -1,6 +1,7 @@
 import { QuestionRadioPropsType, ComponentConfType } from '@/types/questionTypes'
 import QutstionRadio from './index'
 import RadioPropComponent from './RadioPropComponent'
+import RadioStatComponent from './RadioStatComponent'
 
 export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
   title: '单选标题',
@@ -19,6 +20,7 @@ const QutstionRadioConf: ComponentConfType = {
   Component: QutstionRadio,
   PropComponent: RadioPropComponent,
   defaultProps: QuestionRadioDefaultProps,
+  StatComponent: RadioStatComponent,
 }
 
 export default QutstionRadioConf

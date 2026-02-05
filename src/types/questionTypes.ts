@@ -75,6 +75,8 @@ export type ComponentPropsType =
   | QuestionTitlePropsType
   | QuestionPragraphPropsType
   | QuestionInfoPropsType
+  | QuestionRadioPropsType
+  | QuestionCheckboxPropsType
 
 // 后端返回的单个组件的数据格式
 export type ComponentInfoType = {
@@ -94,8 +96,24 @@ export type SingleQuestionType = {
   desc: string
   js: string
   css: string
+  isPublished: boolean
   componentsList: ComponentsListType
 }
+
+// 统计组件的属性类型
+export type StatType = {
+  name: string
+  count: number
+}
+export type QuestionRadioStatPropsType = {
+  stat: Array<StatType>
+}
+
+export type QuestionCheckboxStatPropsType = {
+  stat: Array<StatType>
+}
+
+export type QuestionStatPropsType = QuestionRadioStatPropsType | QuestionCheckboxStatPropsType
 
 // 问卷组件的类型上下文表示
 export type ComponentConfType = {
@@ -104,4 +122,5 @@ export type ComponentConfType = {
   Component: FC<ComponentPropsType>
   PropComponent: FC<ComponentPropsType>
   defaultProps: ComponentPropsType
+  StatComponent?: FC<QuestionStatPropsType>
 }

@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type PageInfoType = {
   title: string
+  isPublished: boolean
   desc?: string
   js?: string
   css?: string
@@ -9,6 +10,7 @@ export type PageInfoType = {
 
 const INIT_STATE: PageInfoType = {
   title: '',
+  isPublished: true,
   desc: '',
   js: '',
   css: '',
