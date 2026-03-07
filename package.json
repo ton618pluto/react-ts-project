@@ -44,7 +44,7 @@
     "eject": "react-scripts eject",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build -b deploy-pages -r git@gitee.com:shen-yimin/question-react-ts.git"
   },
