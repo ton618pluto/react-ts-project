@@ -1,0 +1,31 @@
+name: React 自动构建部署
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 安装依赖
+        run: npm install
+
+      - name: 构建项目
+        run: npm run build
+
+      - name: 部署到 Gitee Pages
+        uses: seepine/gitee-pages-action@v1
+        with:
+          access-token: ${{ secrets.GITEE_TOKEN }}
+          branch: gh-pages
+          folder: build
