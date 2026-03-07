@@ -2,6 +2,7 @@
   "name": "react-ts-project",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@ant-design/icons": "^6.1.0",
     "@dnd-kit/core": "^6.3.1",
