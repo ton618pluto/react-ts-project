@@ -1,71 +1,119 @@
 import { createHashRouter } from 'react-router-dom'
 import React from 'react'
 import MainLayout from '../layouts/MainLayout'
-import Home from '../pages/Home'
-import Register from '../pages/Register'
-import Login from '../pages/Login'
-import NotFound from '../pages/NotFound'
 import ManageLayout from '../layouts/ManageLayout'
-import List from '../pages/manage/list'
-import Star from '../pages/manage/Star'
-import Trash from '../pages/manage/Trash'
 import QuestionLayout from '../layouts/QuestionLayout'
-import Edit from '../pages/question/Edit'
-import Stat from '../pages/question/Stat'
+
+const Home = React.lazy(() => import(/* webpackChunkName: "home" */ '../pages/Home'))
+const Register = React.lazy(() => import(/* webpackChunkName: "register" */ '../pages/Register'))
+const Login = React.lazy(() => import(/* webpackChunkName: "login" */ '../pages/Login'))
+const NotFound = React.lazy(() => import(/* webpackChunkName: "notFound" */ '../pages/NotFound'))
+const List = React.lazy(() => import(/* webpackChunkName: "list" */ '../pages/manage/list'))
+const Star = React.lazy(() => import(/* webpackChunkName: "star" */ '../pages/manage/Star'))
+const Trash = React.lazy(() => import(/* webpackChunkName: "trash" */ '../pages/manage/Trash'))
+const Edit = React.lazy(() => import(/* webpackChunkName: "editPage" */ '../pages/question/Edit'))
+const Stat = React.lazy(() => import(/* webpackChunkName: "statPage" */ '../pages/question/Stat'))
 
 const router = createHashRouter([
   {
     path: '/',
-    element: <MainLayout />,
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <MainLayout />
+      </React.Suspense>
+    ),
     children: [
       {
         path: '/',
-        element: <Home></Home>,
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Home></Home>
+          </React.Suspense>
+        ),
       },
       {
         path: 'register',
-        element: <Register></Register>,
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Register></Register>
+          </React.Suspense>
+        ),
       },
       {
         path: 'login',
-        element: <Login></Login>,
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Login></Login>
+          </React.Suspense>
+        ),
       },
       {
         path: 'manage',
-        element: <ManageLayout></ManageLayout>,
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <ManageLayout></ManageLayout>
+          </React.Suspense>
+        ),
         children: [
           {
             path: 'list',
-            // index: true,
-            element: <List></List>,
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <List></List>
+              </React.Suspense>
+            ),
           },
           {
             path: 'star',
-            element: <Star></Star>,
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <Star></Star>
+              </React.Suspense>
+            ),
           },
           {
             path: 'trash',
-            element: <Trash></Trash>,
+            element: (
+              <React.Suspense fallback={<div>Loading...</div>}>
+                <Trash></Trash>
+              </React.Suspense>
+            ),
           },
         ],
       },
       {
         path: '*',
-        element: <NotFound></NotFound>,
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <NotFound></NotFound>
+          </React.Suspense>
+        ),
       },
     ],
   },
   {
     path: 'question',
-    element: <QuestionLayout></QuestionLayout>,
+    element: (
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <QuestionLayout></QuestionLayout>
+      </React.Suspense>
+    ),
     children: [
       {
         path: 'edit/:id',
-        element: <Edit></Edit>,
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Edit></Edit>
+          </React.Suspense>
+        ),
       },
       {
         path: 'stat/:id',
-        element: <Stat></Stat>,
+        element: (
+          <React.Suspense fallback={<div>Loading...</div>}>
+            <Stat></Stat>
+          </React.Suspense>
+        ),
       },
     ],
   },

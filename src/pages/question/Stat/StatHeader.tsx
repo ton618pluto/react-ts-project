@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useMemo, useRef } from 'react'
 import { Space, Button, Typography, message, Input, Tooltip, Popover, QRCode } from 'antd'
 // import QRCode from 'qrcode.react'
 import type { InputRef } from 'antd'
@@ -25,7 +25,34 @@ const StatHeader: FC = () => {
     }
   }
 
-  function getLinkAndQRCodeElem() {
+  // 获取二维码
+  // function getLinkAndQRCodeElem() {
+  //   if (!isPublished) return null
+
+  //   const url = 'http://localhost:8000/' + id
+
+  //   // 定义二维码组件
+  //   const QRCodeElem = (
+  //     <div style={{ textAlign: 'center' }}>
+  //       <QRCode value={url}></QRCode>
+  //     </div>
+  //   )
+
+  //   return (
+  //     <Space>
+  //       <Input value={url} style={{ width: '300px' }} ref={urlInputRef} />
+  //       <Tooltip title="拷贝链接">
+  //         <Button icon={<CopyOutlined />} onClick={handleCopy}></Button>
+  //       </Tooltip>
+  //       <Popover content={QRCodeElem}>
+  //         <Button icon={<QrcodeOutlined />}></Button>
+  //       </Popover>
+  //     </Space>
+  //   )
+  // }
+
+  // 什么时候使用useMemo？1.依赖项不经常变化  2. 缓存的元素创建成本较高
+  const LinkAndQRCodeElem = useMemo(() => {
     if (!isPublished) return null
 
     const url = 'http://localhost:8000/' + id
@@ -48,7 +75,7 @@ const StatHeader: FC = () => {
         </Popover>
       </Space>
     )
-  }
+  }, [isPublished, id])
 
   return (
     <div className={styles['header-wrapper']}>
@@ -59,7 +86,7 @@ const StatHeader: FC = () => {
             <Title>{title}</Title>
           </Space>
         </div>
-        <div className={styles.main}>{getLinkAndQRCodeElem()}</div>
+        <div className={styles.main}>{LinkAndQRCodeElem}</div>
         <div className={styles.right}>
           <Button type="primary" onClick={() => nav(`/question/edit/${id}`)}>
             编辑问卷

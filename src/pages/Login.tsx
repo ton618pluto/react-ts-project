@@ -115,7 +115,7 @@ const Login: FC = () => {
               <Button type="primary" htmlType="submit">
                 登录
               </Button>
-              <Link to={'/register'}>注册新用户</Link>
+              <Link to={'/register'}>注册一个新用户.</Link>
             </Space>
           </Form.Item>
         </Form>
