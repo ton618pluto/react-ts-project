@@ -1,29 +1,39 @@
 .canvas{
-    // height: 100%;
     overflow: auto;
-    // background-color: wheat;
 
     .component-wrapper{
         margin: 12px;
         padding: 12px;
-        border: 1px solid #fff;
-        border-radius: 5px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        transition: border-color 0.2s, box-shadow 0.2s;
 
         &:hover{
-            border-color: #d9d9d9;
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-sm);
         }
     }
 
     .component{
         pointer-events: none;
     }
+
+    &.preview-mode .component-wrapper{
+        pointer-events: auto;
+    }
+
+    &.preview-mode .component{
+        pointer-events: auto;
+        position: relative;
+        z-index: 1;
+    }
 }
 
 .selected{
-    border-color: #1890ff !important;
+    border-color: var(--color-primary) !important;
+    box-shadow: var(--shadow-sm);
 }
 
 .locked{
     opacity: 0.5;
-    // pointer-events: none;
 }

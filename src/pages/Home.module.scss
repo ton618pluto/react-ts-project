@@ -4,14 +4,28 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
 
   .info {
     text-align: center;
+    padding: 48px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+
+    h1 {
+      margin-bottom: 16px;
+      color: var(--color-text);
+    }
+
+    p {
+      margin-bottom: 24px;
+      color: var(--color-text-secondary);
+    }
 
     button {
-      height: 60px;
-      font-size: 24px;
+      height: 40px;
+      padding: 0 32px;
+      font-size: 16px;
     }
   }
 }

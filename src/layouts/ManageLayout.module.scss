@@ -1,16 +1,15 @@
-.container{
-    display: flex;
-    margin: 0 auto;
-    width: 1200px;
-    padding: 24px 0;
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-lg) 0;
+  display: flex;
 
-    .left{
-        width: 120px;
-    }
+  .left {
+    width: 120px;
+  }
 
-    .right{
-        flex: 1;
-        margin-left: 60px;
-    }
+  .right {
+    flex: 1;
+    margin-left: 60px;
+  }
 }
-

@@ -9,35 +9,34 @@ import { addComponent } from '@/store/modules/componentsReducer'
 const { Title } = Typography
 
 const ComponentLib: FC = () => {
+  function getComponent(componentConf: ComponentConfType) {
+    const { title, type, Component, defaultProps } = componentConf
+    const dispatch = useAppDispatch()
+    const handleAddClick = useCallback(() => {
+      dispatch(
+        addComponent({
+          fe_id: nanoid(),
+          title,
+          type,
+          isHidden: false,
+          isLocked: false,
+          props: defaultProps,
+        })
+      )
+    }, [])
+
+    return (
+      <div className={styles['wrapper']} key={type} onClick={handleAddClick}>
+        <div className={styles['component']}>
+          <Component {...defaultProps} />
+        </div>
+      </div>
+    )
+  }
   return (
     <>
       {componentConfGroup.map((group, idx) => {
         const { groupId, groupName, components } = group
-
-        function getComponent(componentConf: ComponentConfType) {
-          const { title, type, Component, defaultProps } = componentConf
-          const dispatch = useAppDispatch()
-          const handleAddClick = useCallback(() => {
-            dispatch(
-              addComponent({
-                fe_id: nanoid(),
-                title,
-                type,
-                isHidden: false,
-                isLocked: false,
-                props: defaultProps,
-              })
-            )
-          }, [])
-
-          return (
-            <div className={styles['wrapper']} key={type} onClick={handleAddClick}>
-              <div className={styles['component']}>
-                <Component {...defaultProps} />
-              </div>
-            </div>
-          )
-        }
 
         return (
           <div key={groupId}>

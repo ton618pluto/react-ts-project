@@ -27,16 +27,19 @@ const SortableContainer: FC<PropsType> = (props: PropsType) => {
     })
   )
 
+  // 拖拽结束时触发
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
     if (over === null) return
 
+    // 通过id拿到拖拽元素的新旧位置，active为正在拖拽的元素，over为拖拽结束时所在的位置
     if (active.id !== over.id) {
       // const oldIndex = items.indexOf(active.id.toString());
       const oldIndex = items.findIndex(item => item.fe_id === active.id)
       // const newIndex = items.indexOf(over.id.toString());
       const newIndex = items.findIndex(item => item.fe_id === over.id)
 
+      // 传入新旧位置，准备交换
       onDragEnd(oldIndex, newIndex)
     }
   }

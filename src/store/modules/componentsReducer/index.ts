@@ -16,12 +16,14 @@ export type ComponentStateType = {
   componentsList: ComponentsListType
   selectedId: string
   copiedComponent: ComponentInfoType | null
+  previewMode: boolean
 }
 
 const INIT_STATE: ComponentStateType = {
   componentsList: [],
   selectedId: '',
   copiedComponent: null,
+  previewMode: false,
 }
 
 const componentStore = createSlice({
@@ -151,6 +153,13 @@ const componentStore = createSlice({
 
       state.componentsList = arrayMove(componentsList, oldIndex, newIndex)
     },
+    // 切换预览模式
+    togglePreviewMode(state: ComponentStateType) {
+      state.previewMode = !state.previewMode
+      if (state.previewMode) {
+        state.selectedId = ''
+      }
+    },
   },
 })
 
@@ -168,5 +177,6 @@ export const {
   selectNextComponent,
   changeComponentTitle,
   moveComponentPosition,
+  togglePreviewMode,
 } = componentStore.actions
 export default componentStore.reducer

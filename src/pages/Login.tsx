@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react'
 import { Typography, Space, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserOutlined } from '@ant-design/icons'
-import styles from './Register.module.scss'
+import styles from './Login.module.scss'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginService } from '../services/user'
 import { useRequest } from 'ahooks'
@@ -67,15 +67,13 @@ const Login: FC = () => {
 
   return (
     <div className={styles.container}>
-      <div>
-        <Space>
-          <Title level={2}>
+      <div className={styles.card}>
+        <div className={styles.title}>
+          <Space>
             <UserOutlined></UserOutlined>
-          </Title>
-          <Title level={2}>用户登录测试</Title>
-        </Space>
-      </div>
-      <div>
+            <Title level={2}>用户登录</Title>
+          </Space>
+        </div>
         <Form
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
@@ -115,7 +113,7 @@ const Login: FC = () => {
               <Button type="primary" htmlType="submit">
                 登录
               </Button>
-              <Link to={'/register'}>注册一个新用户.</Link>
+              <Link to={'/register'}>注册新用户.</Link>
             </Space>
           </Form.Item>
         </Form>

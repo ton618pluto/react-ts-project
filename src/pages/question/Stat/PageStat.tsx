@@ -35,7 +35,7 @@ const PageStat: FC<PropsType> = (props: PropsType) => {
       title: (
         <div style={{ cursor: 'pointer' }}>
           <span
-            style={{ color: fe_id === selectedComponentId ? '#1890ff' : 'inherit' }}
+            style={{ color: fe_id === selectedComponentId ? 'var(--color-primary)' : 'inherit' }}
             onClick={() => {
               setSelectedComponentId(fe_id)
               setSelectedComponentType(type)

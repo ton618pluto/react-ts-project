@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问卷调查系统 - 项目架构文档</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h2 .icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .tech-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .tech-item .name {
+            font-weight: bold;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .tech-item .category {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .tree {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+
+        .tree .folder {
+            color: #519aba;
+        }
+
+        .tree .file {
+            color: #9cdcfe;
+        }
+
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .module-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .module-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .module-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .module-card .features {
+            list-style: none;
+            padding: 0;
+        }
+
+        .module-card .features li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .module-card .features li::before {
+            content: "✓";
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .highlight-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .highlight-item h4 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .highlight-item p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        th {
+            background: #f5f7fa;
+            color: #333;
+            font-weight: 600;
+        }
+
+        td {
+            color: #666;
+        }
+
+        tr:hover td {
+            background: #f9f9f9;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+
+        .component-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .component-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .highlight-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .highlight-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .highlight-section h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .highlight-section p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .highlight-section ul {
+            color: #666;
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .highlight-section li {
+            margin-bottom: 5px;
+        }
+
+        .highlight-section code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: #e83e8c;
+        }
+
+        .qa-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #e0e0e0;
+        }
+
+        .qa-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .qa-section h3 {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            background: #f5f7fa;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .answer {
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .answer ul, .answer ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .answer li {
+            margin-bottom: 5px;
+        }
+
+        .answer strong {
+            color: #667eea;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        /* Mermaid 图表样式 */
+        .mermaid {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        /* 目录树样式 */
+        .dir-tree {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .dir-tree pre {
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .dir-tree .dir {
+            color: #4ec9b0;
+            font-weight: 600;
+        }
+
+        .dir-tree .file {
+            color: #9cdcfe;
+        }
+    </style>
+    <!-- 引入 Mermaid.js -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            mermaid.initialize({
+                startOnLoad: true,
+                theme: 'default',
+                flowchart: {
+                    useMaxWidth: true,
+                    htmlLabels: true,
+                    curve: 'basis'
+                },
+                sequence: {
+                    useMaxWidth: true,
+                    diagramMarginX: 50,
+                    actorMargin: 50,
+                    noteMargin: 10,
+                    messageMargin: 35
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 问卷调查系统</h1>
+            <p>项目架构文档 - 面试准备</p>
+        </header>
+
+        <!-- 技术栈 -->
+        <div class="card">
+            <h2><span class="icon">⚛</span>技术栈</h2>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <div class="name">React 19</div>
+                    <div class="category">前端框架</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">TypeScript 4.9</div>
+                    <div class="category">类型系统</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">Ant Design 6</div>
+                    <div class="category">UI组件库</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">Redux Toolkit</div>
+                    <div class="category">状态管理</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">redux-undo</div>
+                    <div class="category">撤销/重做</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">React Router 7</div>
+                    <div class="category">路由管理</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">recharts</div>
+                    <div class="category">图表库</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">@dnd-kit</div>
+                    <div class="category">拖拽排序</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">axios</div>
+                    <div class="category">HTTP请求</div>
+                </div>
+                <div class="tech-item">
+                    <div class="name">sass</div>
+                    <div class="category">样式预处理</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 目录结构 -->
+        <div class="card">
+            <h2><span class="icon">📁</span>目录结构</h2>
+            <div class="tree">
+<span class="folder">src/</span>
+├── <span class="folder">components/</span>              <span class="file"># 通用组件</span>
+│   ├── <span class="folder">questionComponents/</span>  <span class="file"># 问卷组件库（7种）</span>
+│   └── <span class="folder">DragSortable/</span>      <span class="file"># 拖拽排序组件</span>
+├── <span class="folder">hooks/</span>                   <span class="file"># 自定义Hooks</span>
+├── <span class="folder">layouts/</span>                 <span class="file"># 布局组件</span>
+│   ├── <span class="file">MainLayout.tsx</span>
+│   ├── <span class="file">ManageLayout.tsx</span>
+│   └── <span class="file">QuestionLayout.tsx</span>
+├── <span class="folder">pages/</span>                   <span class="file"># 页面组件</span>
+│   ├── <span class="folder">manage/</span>              <span class="file"># 问卷管理</span>
+│   └── <span class="folder">question/</span>           <span class="file"># 编辑/统计</span>
+├── <span class="folder">router/</span>                   <span class="file"># 路由配置</span>
+├── <span class="folder">services/</span>                 <span class="file"># API服务层</span>
+├── <span class="folder">store/</span>                   <span class="file"># 状态管理</span>
+├── <span class="folder">types/</span>                    <span class="file"># 类型定义</span>
+└── <span class="folder">utils/</span>                    <span class="file"># 工具函数</span>
+            </div>
+        </div>
+
+        <!-- 核心模块 -->
+        <div class="card">
+            <h2><span class="icon">🔧</span>核心功能模块</h2>
+            <div class="module-grid">
+                <div class="module-card">
+                    <h3>👤 用户模块</h3>
+                    <ul class="features">
+                        <li>登录/注册功能</li>
+                        <li>用户信息存储在Redux</li>
+                    </ul>
+                </div>
+                <div class="module-card">
+                    <h3>📝 问卷管理</h3>
+                    <ul class="features">
+                        <li>问卷列表展示</li>
+                        <li>星标收藏</li>
+                        <li>回收站（软删除）</li>
+                    </ul>
+                </div>
+                <div class="module-card">
+                    <h3>✏️ 问卷编辑器</h3>
+                    <ul class="features">
+                        <li>拖拽排序</li>
+                        <li>属性编辑面板</li>
+                        <li>复制/粘贴/删除</li>
+                        <li>撤销/重做</li>
+                        <li>锁定/解锁</li>
+                        <li>显隐控制</li>
+                    </ul>
+                </div>
+                <div class="module-card">
+                    <h3>📊 问卷统计</h3>
+                    <ul class="features">
+                        <li>图表展示（recharts）</li>
+                        <li>二维码生成</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 状态管理 -->
+        <div class="card">
+            <h2><span class="icon">📦</span>状态管理 - Redux</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>模块</th>
+                        <th>文件</th>
+                        <th>功能</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>userInfo</td>
+                        <td>userReducer.ts</td>
+                        <td>用户登录信息</td>
+                    </tr>
+                    <tr>
+                        <td>components</td>
+                        <td>componentsReducer/index.ts</td>
+                        <td>问卷组件列表（支持撤销/重做）</td>
+                    </tr>
+                    <tr>
+                        <td>pageInfo</td>
+                        <td>pageInfoReducer.ts</td>
+                        <td>页面标题、描述</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin: 20px 0 10px;">Components Reducer 核心 Actions</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>功能</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>changeSelectedId</td>
+                        <td>切换选中组件</td>
+                    </tr>
+                    <tr>
+                        <td>addComponent</td>
+                        <td>添加组件</td>
+                    </tr>
+                    <tr>
+                        <td>changeComponentProp</td>
+                        <td>修改组件属性</td>
+                    </tr>
+                    <tr>
+                        <td>deleteComponent</td>
+                        <td>删除组件</td>
+                    </tr>
+                    <tr>
+                        <td>moveComponentPosition</td>
+                        <td>拖拽排序</td>
+                    </tr>
+                    <tr>
+                        <td>copiedComponent/pasteComponent</td>
+                        <td>复制粘贴</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 路由设计 -->
+        <div class="card">
+            <h2><span class="icon">🛣</span>路由设计</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>路由</th>
+                        <th>页面</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>/</td>
+                        <td>Home</td>
+                        <td>首页</td>
+                    </tr>
+                    <tr>
+                        <td>/login</td>
+                        <td>Login</td>
+                        <td>登录</td>
+                    </tr>
+                    <tr>
+                        <td>/register</td>
+                        <td>Register</td>
+                        <td>注册</td>
+                    </tr>
+                    <tr>
+                        <td>/manage/list</td>
+                        <td>List</td>
+                        <td>问卷列表</td>
+                    </tr>
+                    <tr>
+                        <td>/manage/star</td>
+                        <td>Star</td>
+                        <td>星标问卷</td>
+                    </tr>
+                    <tr>
+                        <td>/manage/trash</td>
+                        <td>Trash</td>
+                        <td>回收站</td>
+                    </tr>
+                    <tr>
+                        <td>/question/edit/:id</td>
+                        <td>Edit</td>
+                        <td>问卷编辑器</td>
+                    </tr>
+                    <tr>
+                        <td>/question/stat/:id</td>
+                        <td>Stat</td>
+                        <td>问卷统计</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin: 20px 0 10px;">特点</h3>
+            <ul style="color: #666; line-height: 2;">
+                <li>✅ 使用 createHashRouter 兼容部署</li>
+                <li>✅ React.lazy() + Suspense 实现代码分割</li>
+                <li>✅ 路由守卫辅助函数：isLoginOrRegister、isNoNeedLogin</li>
+            </ul>
+        </div>
+
+        <!-- 问卷组件库 -->
+        <div class="card">
+            <h2><span class="icon">🧩</span>问卷组件库</h2>
+            <p style="color: #666; margin-bottom: 15px;">每种组件包含：index.tsx（渲染）、default.ts（默认属性）、PropComponent.tsx（属性编辑）、StatComponent.tsx（统计面板）</p>
+            <div class="component-list">
+                <span class="component-tag">QuestionInput</span>
+                <span class="component-tag">QuestionTextarea</span>
+                <span class="component-tag">QuestionTitle</span>
+                <span class="component-tag">QuestionParagraph</span>
+                <span class="component-tag">QuestionInfo</span>
+                <span class="component-tag">QuestionRadio</span>
+                <span class="component-tag">QuestionCheckbox</span>
+            </div>
+        </div>
+
+        <!-- 面试亮点 -->
+        <div class="card">
+            <h2><span class="icon">⭐</span>面试亮点总结（详细实现）</h2>
+
+            <!-- 1. 低代码编辑器 -->
+            <div class="highlight-section">
+                <h3>1. 低代码编辑器设计</h3>
+                <p><strong>核心思路：</strong>组件注册 + 动态渲染</p>
+                <ul>
+                    <li>每个组件通过 <code>default.ts</code> 导出 <code>ComponentConfType</code> 配置对象</li>
+                    <li>统一入口 <code>questionComponents/index.ts</code> 提供 <code>getComponentConfByType(type)</code> 函数</li>
+                    <li>EditCanvas 通过该函数动态获取并渲染组件</li>
+                </ul>
+                <div class="code-block">
+// 组件配置 (default.ts)
+const QuestionTitleConf: ComponentConfType = {
+  title: '标题',
+  type: 'questionTitle',
+  Component: QuestionTitleComponent,
+  PropComponent: TitlePropComponent,
+  defaultProps: QuestionTitleDefault,
+}
+
+// 动态渲染 (EditCanvas.tsx)
+const componentConf = getComponentConfByType(type)
+return &lt;componentConf.Component {...props} /&gt;
+                </div>
+            </div>
+
+            <!-- 2. 撤销/重做 -->
+            <div class="highlight-section">
+                <h3>2. 撤销/重做功能</h3>
+                <p><strong>核心思路：</strong>redux-undo 包装 + 过滤不相关 action</p>
+                <ul>
+                    <li>使用 <code>undoable(componentStore, { limit: 20 })</code> 包装</li>
+                    <li>使用 <code>excludeAction</code> 过滤：resetComponents、changeSelectedId、selectPreComponent、selectNextComponent</li>
+                    <li>只保留实际数据变更（添加/删除/修改组件）到撤销历史</li>
+                </ul>
+                <table>
+                    <thead>
+                        <tr><th>被过滤的 Action</th><th>原因</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>resetComponents</td><td>整体替换，不应纳入撤销</td></tr>
+                        <tr><td>changeSelectedId</td><td>UI状态变化是瞬时的</td></tr>
+                        <tr><td>selectPre/NextComponent</td><td>导航操作是瞬时的</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 3. 拖拽排序 -->
+            <div class="highlight-section">
+                <h3>3. 拖拽排序实现</h3>
+                <p><strong>核心思路：</strong>@dnd-kit + Redux 状态更新</p>
+                <ul>
+                    <li>封装 <code>SortableContainer</code> 和 <code>SortableItem</code> 组件</li>
+                    <li>使用 <code>useSortable</code> 和 <code>SortableContext</code></li>
+                    <li>拖拽结束 dispatch <code>moveComponentPosition</code> 更新顺序</li>
+                </ul>
+            </div>
+
+            <!-- 4. 组件化设计 -->
+            <div class="highlight-section">
+                <h3>4. 组件化设计（可扩展）</h3>
+                <p><strong>每种组件包含4个文件：</strong></p>
+                <table>
+                    <thead>
+                        <tr><th>文件</th><th>作用</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>index.tsx</td><td>画布渲染组件</td></tr>
+                        <tr><td>default.ts</td><td>默认属性配置</td></tr>
+                        <tr><td>PropComponent.tsx</td><td>属性编辑面板</td></tr>
+                        <tr><td>StatComponent.tsx</td><td>统计面板（可选）</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>新增组件只需：</strong>创建文件夹实现4个文件 → 在 index.ts 导入即可</p>
+            </div>
+
+            <!-- 5. 路由懒加载 -->
+            <div class="highlight-section">
+                <h3>5. 性能优化：路由懒加载</h3>
+                <div class="code-block">
+const Home = React.lazy(() => import('../pages/Home'))
+const Edit = React.lazy(() => import('../pages/question/Edit'))
+
+&lt;React.Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+  &lt;Home /&gt;
+&lt;/React.Suspense&gt;
+                </div>
+            </div>
+
+            <!-- 6. TypeScript -->
+            <div class="highlight-section">
+                <h3>6. TypeScript 类型定义</h3>
+                <div class="code-block">
+export type ComponentConfType = {
+  title: string
+  type: string
+  Component: FC&lt;ComponentPropsType&gt;
+  PropComponent: FC&lt;ComponentPropsType&gt;
+  defaultProps: ComponentPropsType
+  StatComponent?: FC&lt;QuestionStatPropsType&gt;
+}
+
+export type ComponentInfoType = {
+  fe_id: string
+  title: string
+  type: string
+  isHidden: boolean
+  isLocked: boolean
+  props: ComponentPropsType
+}
+                </div>
+            </div>
+        </div>
+
+        <!-- 面试快速回答模板 -->
+        <div class="card">
+            <h2><span class="icon">📝</span>面试快速回答模板</h2>
+
+            <div class="qa-section">
+                <h3>Q1: 请介绍一下你做过的项目</h3>
+                <div class="answer">
+                    <p>我开发的是一个<strong>问卷调查/低代码平台</strong>，支持问卷的创建、编辑、发布和统计分析。核心技术栈是 React 19 + TypeScript + Redux Toolkit + Ant Design。</p>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <h3>Q2: 项目的整体架构是怎么样的？</h3>
+                <div class="answer">
+                    <p>项目采用典型的 React + Redux 架构。目录结构分为 components（组件）、pages（页面）、store（状态）、services（API）等模块。</p>
+                    <ul>
+                        <li><strong>路由层</strong>：Hash 路由 + 懒加载</li>
+                        <li><strong>状态层</strong>：Redux Toolkit 管理用户信息、问卷组件、页面信息，其中问卷组件使用 redux-undo 支持撤销/重做</li>
+                        <li><strong>视图层</strong>：Ant Design 组件库，7种问卷组件采用统一规范设计</li>
+                    </ul>
+                    <p>核心亮点是<strong>低代码编辑器</strong>，通过"组件注册 + 动态渲染"的配置化设计，支持拖拽排序、属性编辑、复制粘贴等功能。</p>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <h3>Q3: 你觉得这个项目的亮点是什么？</h3>
+                <div class="answer">
+                    <ol>
+                        <li><strong>低代码编辑器设计</strong>：采用配置化思路，每个问卷组件导出配置对象，通过 getComponentConfByType 动态渲染。新增组件非常方便。</li>
+                        <li><strong>撤销/重做功能</strong>：使用 redux-undo 实现，限制20步，并且过滤掉了选中状态、导航操作等不相关的 action，只保留实际数据变更。</li>
+                        <li><strong>拖拽排序</strong>：使用 @dnd-kit 实现，封装了 SortableContainer 和 SortableItem 组件，在画布和图层面板都支持拖拽。</li>
+                        <li><strong>性能优化</strong>：路由懒加载，每个页面独立打包成 chunk，减少首屏加载时间。</li>
+                        <li><strong>TypeScript</strong>：有完整的类型定义，组件配置、props 等都有明确的类型约束。</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <h3>Q4: 状态管理是怎么设计的？</h3>
+                <div class="answer">
+                    <p>使用 Redux Toolkit，主要有三个 store 模块：</p>
+                    <ul>
+                        <li><strong>userInfo</strong>：用户登录信息</li>
+                        <li><strong>components</strong>：问卷组件列表，用 undoable 包装支持撤销/重做</li>
+                        <li><strong>pageInfo</strong>：页面标题、描述等基本信息</li>
+                    </ul>
+                    <p>components 是核心，包含 addComponent、changeComponentProp、deleteComponent、moveComponentPosition 等 action，支持组件的增删改和拖拽排序。</p>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <h3>Q5: 问卷组件是怎么设计的？怎么保证可扩展性？</h3>
+                <div class="answer">
+                    <h4 style="color:#667eea;margin:15px 0 10px;">1. 统一目录结构（每个组件4个文件）</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.85rem;line-height:1.6;">
+QuestionTitle/
+├── index.tsx          # 画布渲染组件（Component）
+├── default.ts        # 默认属性 + 组件配置（ComponentConfType）
+├── TitlePropComponent.tsx  # 属性编辑面板
+└── TitleStatComponent.tsx # 统计面板（可选）
+                    </pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">2. TypeScript 类型定义（核心）</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.85rem;line-height:1.6;"><code>// types/questionTypes.ts
+
+// 每个组件的 Props 类型（联合类型）
+export type QuestionTitlePropsType = {
+  text?: string
+  level?: 1 | 2 | 3
+  isCenter?: boolean
+  isLocked?: boolean
+  onChange?: (props: QuestionTitlePropsType) => void
+}
+
+// 组件配置对象类型（核心接口）
+export type ComponentConfType = {
+  title: string           // 组件名称（如"标题"）
+  type: string           // 组件类型（如"questionTitle"）
+  Component: FC<any>     // 画布渲染组件
+  PropComponent: FC<any> // 属性编辑面板
+  defaultProps: any      // 默认属性值
+  StatComponent?: FC<any> // 统计面板（可选）
+}
+
+// 问卷中组件的数据结构
+export type ComponentInfoType = {
+  fe_id: string          // 组件唯一ID
+  title: string
+  type: string
+  isHidden: boolean      // 是否隐藏
+  isLocked: boolean     // 是否锁定
+  props: ComponentPropsType  // 组件属性
+}</code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">3. 组件配置注册（default.ts）</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.85rem;line-height:1.6;"><code>// QuestionTitle/default.ts
+import Component from './index'
+import { QuestionTitlePropsType, ComponentConfType } from '@/types/questionTypes'
+import TitlePropComponent from './TitlePropComponent'
+
+// 默认属性
+export const QuestionTitleDefault: QuestionTitlePropsType = {
+  text: '这是一个问卷标题',
+  level: 1,
+  isCenter: false,
+}
+
+// 组件配置对象
+const QuestionTitleConf: ComponentConfType = {
+  title: '标题',
+  type: 'questionTitle',
+  Component: Component,           // 画布渲染
+  PropComponent: TitlePropComponent, // 属性编辑
+  defaultProps: QuestionTitleDefault,
+}
+export default QuestionTitleConf</code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">4. 统一入口与动态获取（index.ts）</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.85rem;line-height:1.6;"><code>// components/questionComponents/index.ts
+import { ComponentConfType } from '@/types/questionTypes'
+import QuestionTitleConf from './QuestionTitle/default'
+// ... 导入其他组件配置
+
+// 所有组件配置数组
+const componentConfList: ComponentConfType[] = [
+  QuestionTitleConf,
+  QuestionParagraphConf,
+  QuestionInfoConf,
+  // ...
+]
+
+// 根据 type 动态获取组件配置
+export const getComponentConfByType = (type: string): ComponentConfType | undefined => {
+  return componentConfList.find(item => item.type == type)
+}</code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">5. 动态渲染（EditCanvas.tsx）</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.85rem;line-height:1.6;"><code>// 编辑器画布中渲染组件
+const componentConf = getComponentConfByType(type)
+if (!componentConf) return null
+
+// 动态渲染画布组件
+const { Component } = componentConf
+return <Component {...props} /></code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">6. 可扩展性保证</h4>
+                    <ul style="margin:10px 0;padding-left:20px;line-height:1.8;">
+                        <li><strong>配置化注册</strong>：新增组件只需创建文件夹，实现4个文件，然后在 index.ts 导入配置即可</li>
+                        <li><strong>TypeScript 约束</strong>：ComponentConfType 接口强制每个组件必须包含 Component、PropComponent、defaultProps</li>
+                        <li><strong>统一入口</strong>：getComponentConfByType 根据 type 动态获取，编辑器/属性面板/统计页面复用同一套逻辑</li>
+                        <li><strong>组件分组</strong>：支持 componentConfGroup 按功能分组展示（文本显示/用户输入/用户选择）</li>
+                    </ul>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">7. 新增组件完整步骤（以"评分组件 QuestionRate"为例）</h4>
+                    <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:10px 0;">
+                        <p style="color:#d63384;margin-bottom:15px;"><strong>假设要新增一个5星评分组件 QuestionRate</strong></p>
+
+                        <p style="color:#667eea;margin:15px 0 8px;"><strong>Step 1: 定义 Props 类型</strong></p>
+                        <pre style="background:#fff;padding:12px;border-radius:6px;overflow-x:auto;font-size:0.8rem;">// src/types/questionTypes.ts 中添加
+export type QuestionRatePropsType = {
+  text?: string          // 问题标题
+  value?: number        // 当前选中值（0-5）
+  isVertical?: boolean   // 是否垂直排列
+  onChange?: (props: QuestionRatePropsType) => void
+}</pre>
+
+                        <p style="color:#667eea;margin:15px 0 8px;"><strong>Step 2: 创建组件文件夹和文件</strong></p>
+                        <pre style="background:#fff;padding:12px;border-radius:6px;overflow-x:auto;font-size:0.8rem;">src/components/questionComponents/QuestionRate/
+├── index.tsx                # 画布渲染组件
+├── default.ts              # 组件配置（必选）
+├── RatePropComponent.tsx   # 属性编辑面板（必选）
+└── RateStatComponent.tsx   # 统计面板（可选）</pre>
+
+                        <p style="color:#667eea;margin:15px 0 8px;"><strong>Step 3: 实现画布渲染组件 (index.tsx)</strong></pre>
+                        <pre style="background:#fff;padding:12px;border-radius:6px;overflow-x:auto;font-size:0.8rem;">// index.tsx
+import { FC } from 'react'
+import { QuestionRatePropsType } from '@/types/questionTypes'
+import { RateDefault } from './default'
+import { Rate } from 'antd'  // 或其他UI库
+
+const QuestionRate: FC<QuestionRatePropsType> = (props) => {
+  const { text, value } = { ...RateDefault, ...props }
+  return (
+    &lt;div&gt;
+      &lt;p&gt;{text}&lt;/p&gt;
+      &lt;Rate value={value} /&gt;
+    &lt;/div&gt;
+  )
+}
+export default QuestionRate</pre>
+
+                        <p style="color:#667eea;margin:15px 0 8px;"><strong>Step 4: 实现组件配置 (default.ts)</strong></pre>
+                        <pre style="background:#fff;padding:12px;border-radius:6px;overflow-x:auto;font-size:0.8rem;">// default.ts
+import Component from './index'
+import { QuestionRatePropsType, ComponentConfType } from '@/types/questionTypes'
+import RatePropComponent from './RatePropComponent'
+
+// 默认属性
+export const RateDefault: QuestionRatePropsType = {
+  text: '请给我们评分',
+  value: 0,
+  isVertical: false,
+}
+
+// 组件配置对象
+const QuestionRateConf: ComponentConfType = {
+  title: '评分',
+  type: 'questionRate',
+  Component: Component,
+  PropComponent: RatePropComponent,
+  defaultProps: RateDefault,
+}
+export default QuestionRateConf</pre>
+
+                        <p style="color:#667eea;margin:15px 0 8px;"><strong>Step 5: 实现属性编辑面板 (RatePropComponent.tsx)</strong></pre>
+                        <pre style="background:#fff;padding:12px;border-radius:6px;overflow-x:auto;font-size:0.8rem;">// RatePropComponent.tsx
+import { FC } from 'react'
+import { Form, Input, Switch } from 'antd'
+import { QuestionRatePropsType } from '@/types/questionTypes'
+
+const RatePropComponent: FC<QuestionRatePropsType> = (props) => {
+  const { text, value, isVertical, onChange } = props
+
+  function handleChange(key: string, val: any) {
+    onChange?.({ ...props, [key]: val })
+  }
+
+  return (
+    &lt;Form layout="vertical"&gt;
+      &lt;Form.Item label="问题标题"&gt;
+        &lt;Input value={text} onChange={e => handleChange('text', e.target.value)} /&gt;
+      &lt;/Form.Item&gt;
+      &lt;Form.Item label="垂直排列"&gt;
+        &lt;Switch checked={isVertical} onChange={val => handleChange('isVertical', val)} /&gt;
+      &lt;/Form.Item&gt;
+    &lt;/Form&gt;
+  )
+}
+export default RatePropComponent</pre>
+
+                        <p style="color:#667eea;margin:15px 0 8px;"><strong>Step 6: 注册组件到入口文件</strong></pre>
+                        <pre style="background:#fff;padding:12px;border-radius:6px;overflow-x:auto;font-size:0.8rem;">// src/components/questionComponents/index.ts
+import QuestionRateConf from './QuestionRate/default'
+// ... 其他导入
+
+const componentConfList: ComponentConfType[] = [
+  QuestionTitleConf,
+  // ... 其他组件
+  QuestionRateConf,  // 新增这一行
+]
+
+// 如果需要分组展示，在 componentConfGroup 中添加
+export const componentConfGroup = [
+  {
+    groupId: 'selectGroup',
+    groupName: '用户选择',
+    components: [QutstionRadioConf, QuestionCheckboxConf, QuestionRateConf], // 加入分组
+  },
+]</pre>
+
+                        <p style="color:#28a745;margin:15px 0 5px;"><strong>完成！新增组件已自动支持以下功能：</strong></p>
+                        <ul style="margin:5px 0;padding-left:20px;line-height:1.8;color:#666;">
+                            <li>✅ 编辑器画布中显示</li>
+                            <li>✅ 左侧组件库中显示</li>
+                            <li>✅ 右侧属性面板可编辑</li>
+                            <li>✅ 拖拽排序</li>
+                            <li>✅ 复制/粘贴</li>
+                            <li>✅ 撤销/重做</li>
+                            <li>✅ 显隐控制</li>
+                            <li>✅ 锁定/解锁</li>
+                        </ul>
+                    </div>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">面试回答话术</h4>
+                    <p style="background:#fff8e1;padding:12px;border-radius:8px;margin-top:10px;">
+                        我们采用了<strong>配置化 + TypeScript 类型约束</strong>的组件设计。每个问卷组件都遵循统一的目录结构，包含4个文件：index.tsx（渲染）、default.ts（配置）、PropComponent.tsx（属性编辑）、StatComponent.tsx（统计）。通过 ComponentConfType 接口定义组件配置对象，使用 getComponentConfByType 函数根据 type 动态获取。这样编辑器、属性面板、统计页面都能复用同一套组件逻辑，新增组件也非常方便，只需要创建文件夹并注册配置即可。
+                    </p>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <h3>Q6: 如何实现撤销/重做的？</h3>
+                <div class="answer">
+                    <p>使用 redux-undo 库。用 undoable 包装 componentsReducer，配置最大撤销20步。同时使用 excludeAction 过滤掉 resetComponents（重置）、changeSelectedId（选中）、selectPreComponent/selectNextComponent（导航）等不相关的 action，这些是瞬时 UI 状态，不需要纳入撤销历史。实际的数据变更（添加/删除/修改组件）都会被记录，用户可以安心尝试各种编辑操作。</p>
+                </div>
+            </div>
+
+            <div class="qa-section">
+                <h3>Q7: 如何基于 @dnd-kit 实现拖拽排序的？</h3>
+                <div class="answer">
+                    <h4 style="color:#667eea;margin:15px 0 10px;">1. 拖拽实现架构</h4>
+                    <p style="margin-bottom:15px;">项目使用 <strong>@dnd-kit</strong> 实现拖拽功能，主要在以下3个场景使用：</p>
+                    <ul style="margin:10px 0 15px 20px;line-height:1.8;">
+                        <li>📝 <strong>EditCanvas（画布区）</strong>：问卷组件在画布中拖拽排序</li>
+                        <li>📋 <strong>Layers（图层区）</strong>：图层列表中拖拽排序</li>
+                        <li>📦 <strong>ComponentLib（物料区）</strong>：点击添加（不是拖拽）</li>
+                    </ul>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">2. 封装拖拽容器组件</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.8rem;line-height:1.6;"><code>// components/DragSortable/SortableContainer.tsx
+import { DndContext, MouseSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+
+type PropsType = {
+  children: JSX.Element | JSX.Element[]
+  items: Array<{ id: string; [key: string]: any }>
+  onDragEnd: (oldIndex: number, newIndex: number) => void
+}
+
+const SortableContainer: FC<PropsType> = ({ children, items, onDragEnd }) => {
+  // 配置鼠标传感器，8px 移动才触发拖拽
+  const sensors = useSensors(
+    useSensor(MouseSensor, { activationConstraint: { distance: 8 } })
+  )
+
+  // 拖拽结束处理
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+    if (over === null) return
+    if (active.id !== over.id) {
+      const oldIndex = items.findIndex(item => item.fe_id === active.id)
+      const newIndex = items.findIndex(item => item.fe_id === over.id)
+      onDragEnd(oldIndex, newIndex)
+    }
+  }
+
+  return (
+    &lt;DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}&gt;
+      &lt;SortableContext items={items} strategy={verticalListSortingStrategy}&gt;
+        {children}
+      &lt;/SortableContext&gt;
+    &lt;/DndContext&gt;
+  )
+}</code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">3. 封装拖拽项组件</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.8rem;line-height:1.6;"><code>// components/DragSortable/SortableItem.tsx
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
+
+type ItemProps = {
+  id: string
+  children: JSX.Element
+}
+
+const SortableItem: FC<ItemProps> = ({ children, id }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
+
+  const style = {
+    transform: CSS.Transform.toString(transform),  // 拖拽时的位移
+    transition,  // 过渡动画
+  }
+
+  return (
+    &lt;div ref={setNodeRef} style={style} {...attributes} {...listeners}&gt;
+      {children}
+    &lt;/div&gt;
+  )
+}</code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">4. 画布中使用拖拽（EditCanvas.tsx）</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.8rem;line-height:1.6;"><code>// pages/question/Edit/EditCanvas.tsx
+import SortableContainer from '@/components/DragSortable/SortableContainer'
+import SortableItem from '@/components/DragSortable/SortableItem'
+import { useAppDispatch } from '@/store/types'
+import { moveComponentPosition } from '@/store/modules/componentsReducer'
+
+const EditCanvas: FC = () => {
+  const { componentsList } = useGetComponentInfo()
+  const dispatch = useAppDispatch()
+
+  // 处理拖拽结束，更新 Redux 状态
+  function handleDragEnd(oldIndex: number, newIndex: number) {
+    dispatch(moveComponentPosition({ oldIndex, newIndex }))
+  }
+
+  // 转换为 dnd-kit 需要的 id 格式
+  const componentsListWithId = componentsList.map(comp => ({
+    id: comp.fe_id,
+    ...comp,
+  }))
+
+  return (
+    &lt;SortableContainer items={componentsListWithId} onDragEnd={handleDragEnd}&gt;
+      &lt;div className={styles.canvas}&gt;
+        {componentsList.filter(c => !c.isHidden).map(item => (
+          &lt;SortableItem key={item.fe_id} id={item.fe_id}&gt;
+            &lt;div className={...}&gt;
+              {getComponent(item)}
+            &lt;/div&gt;
+          &lt;/SortableItem&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/SortableContainer&gt;
+  )
+}</code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">5. Redux 中处理拖拽排序</h4>
+                    <pre style="background:#f5f7fa;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.8rem;line-height:1.6;"><code>// store/modules/componentsReducer/index.ts
+// 拖拽排序 action
+export const moveComponentPosition = (payload: { oldIndex: number; newIndex: number }) => ({
+  type: MOVE_COMPONENT_POSITION,
+  payload,
+})
+
+// reducer 中处理
+case MOVE_COMPONENT_POSITION: {
+  const { oldIndex, newIndex } = action.payload
+  const newComponents = [...state.componentsList]
+  const [removed] = newComponents.splice(oldIndex, 1)  // 取出旧位置
+  newComponents.splice(newIndex, 0, removed)  // 插入新位置
+  return { ...state, componentsList: newComponents }
+}</code></pre>
+
+                    <h4 style="color:#667eea;margin:15px 0 10px;">6. 核心原理总结</h4>
+                    <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin:10px 0;">
+                        <p style="color:#667eea;margin-bottom:10px;"><strong>dnd-kit 核心概念：</strong></p>
+                        <ul style="margin:10px 0;padding-left:20px;line-height:1.8;color:#555;">
+                            <li><strong>DndContext</strong>：拖拽上下文，包裹整个拖拽区域</li>
+                            <li><strong>SortableContext</strong>：可排序列表上下文，管理所有可拖拽项</li>
+                            <li><strong>useSortable</strong>：Hook，让元素变得可拖拽，返回 ref、style、listeners</li>
+                            <li><strong>MouseSensor</strong>：鼠标传感器，配置 distance: 8 防止误触</li>
+                            <li><strong>DragEndEvent</strong>：拖拽结束事件，包含 active（起始）和 over（结束）信息</li>
+                        </ul>
+                        <p style="color:#28a745;margin-top:15px;"><strong>面试话术：</strong></p>
+                        <p style="background:#fff8e1;padding:12px;border-radius:8px;margin-top:8px;">
+                            我们封装了 <strong>SortableContainer</strong> 和 <strong>SortableItem</strong> 两个组件。Container 使用 DndContext 包裹，内部用 SortableContext 管理可排序列表；Item 使用 useSortable hook 让元素可拖拽。拖拽结束时通过 onDragEnd 回调拿到 oldIndex 和 newIndex，然后 dispatch moveComponentPosition 更新 Redux 中的 componentsList 数组。这种方式在画布和图层区都复用了同一套逻辑。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模块依赖图 -->
+        <div class="card">
+            <h2><span class="icon">🔗</span>模块依赖图</h2>
+
+            <h3 style="margin: 20px 0 15px; color: #667eea;">📐 整体架构依赖图</h3>
+            <div class="mermaid">
+graph TB
+    subgraph View["视图层"]
+        Pages["pages/<br/>页面组件"]
+        Comps["components/<br/>通用组件"]
+        Layouts["layouts/<br/>布局组件"]
+    end
+
+    subgraph State["状态层"]
+        Store["store/<br/>Redux Store"]
+        RTK["Redux Toolkit<br/>+ redux-undo"]
+    end
+
+    subgraph Service["服务层"]
+        Ajax["services/ajax<br/>Axios封装"]
+        API["services/<br/>API接口"]
+    end
+
+    subgraph Core["核心模块"]
+        Router["router/<br/>路由配置"]
+        Types["types/<br/>类型定义"]
+        Utils["utils/<br/>工具函数"]
+    end
+
+    Pages --> Store
+    Comps --> Store
+    Layouts --> Store
+    Store --> RTK
+    Pages --> API
+    API --> Ajax
+    Ajax --> Types
+            </div>
+
+            <h3 style="margin: 30px 0 15px; color: #667eea;">📦 问卷编辑器模块依赖</h3>
+            <div class="mermaid">
+graph LR
+    subgraph EditPage["问卷编辑器页面"]
+        EditIndex["index.tsx<br/>主入口"]
+    end
+
+    subgraph LeftPanel["左侧面板"]
+        ComponentLib["ComponentLib<br/>组件库"]
+        Layers["Layers<br/>图层"]
+    end
+
+    subgraph Canvas["画布"]
+        EditCanvas["EditCanvas<br/>编辑画布"]
+        Sortable["DragSortable<br/>拖拽组件"]
+    end
+
+    subgraph RightPanel["右侧面板"]
+        RightProp["RightPropComponent<br/>属性编辑"]
+        PageSetting["PageSetting<br/>页面设置"]
+    end
+
+    subgraph QuestionComps["问卷组件库"]
+        QC["7种组件<br/>Title/Input/Radio..."]
+    end
+
+    subgraph Store["Redux Store"]
+        Components["componentsReducer<br/>组件状态"]
+        PageInfo["pageInfoReducer<br/>页面信息"]
+    end
+
+    EditIndex --> EditCanvas
+    EditIndex --> LeftPanel
+    EditIndex --> RightPanel
+
+    ComponentLib --> EditCanvas
+    EditCanvas --> Sortable
+    EditCanvas --> QC
+    EditCanvas --> Components
+
+    Layers --> Components
+    RightProp --> Components
+    RightProp --> QC
+    PageSetting --> PageInfo
+            </div>
+
+            <h3 style="margin: 30px 0 15px; color: #667eea;">🔄 数据流转图（问卷编辑）</h3>
+            <div class="mermaid">
+sequenceDiagram
+    participant 用户
+    participant 画布 as EditCanvas
+    participant 组件库 as ComponentLib
+    participant 属性面板 as RightPropComponent
+    participant Store as Redux Store
+    participant API as services/question
+
+    Note over 用户,Store: 用户操作流程
+
+    用户->>组件库: 点击添加组件
+    组件库->>Store: dispatch(addComponent)
+    Store-->>画布: 触发重渲染
+    画布->>画布: 显示新组件
+
+    用户->>画布: 点击选中组件
+    画布->>Store: dispatch(changeSelectedId)
+    Store-->>属性面板: 触发重渲染
+    属性面板->>属性面板: 显示选中组件属性
+
+    用户->>属性面板: 修改属性
+    属性面板->>Store: dispatch(changeComponentProp)
+    Store-->>画布: 触发重渲染
+    画布->>画布: 更新组件显示
+
+    用户->>画布: 拖拽排序
+    画布->>Store: dispatch(moveComponentPosition)
+    Store-->>画布: 更新组件顺序
+            </div>
+
+            <h3 style="margin: 30px 0 15px; color: #667eea;">🌳 目录结构树</h3>
+            <div class="dir-tree">
+<pre src="">
+src/
+├── <span class="dir">components/</span>               # 通用组件
+│   ├── <span class="file">Logo.tsx</span>
+│   ├── <span class="file">QuestionCard.tsx</span>
+│   ├── <span class="file">ListPage.tsx</span>
+│   ├── <span class="file">ListSearch.tsx</span>
+│   ├── <span class="file">UserInfo.tsx</span>
+│   ├── <span class="dir">DragSortable/</span>        # 拖拽组件
+│   │   ├── <span class="file">SortableContainer.tsx</span>
+│   │   └── <span class="file">SortableItem.tsx</span>
+│   └── <span class="dir">questionComponents/</span>  # 问卷组件库
+│       ├── <span class="file">index.ts</span>            # 统一入口
+│       ├── <span class="dir">QuestionTitle/</span>
+│       ├── <span class="dir">QuestionInput/</span>
+│       ├── <span class="dir">QuestionRadio/</span>
+│       ├── <span class="dir">QuestionCheckbox/</span>
+│       └── ...
+│
+├── <span class="dir">pages/</span>                    # 页面组件
+│   ├── <span class="file">Home.tsx</span>
+│   ├── <span class="file">Login.tsx</span>
+│   ├── <span class="file">Register.tsx</span>
+│   ├── <span class="file">NotFound.tsx</span>
+│   ├── <span class="dir">manage/</span>               # 问卷管理
+│   │   ├── <span class="file">list.tsx</span>
+│   │   ├── <span class="file">Star.tsx</span>
+│   │   └── <span class="file">Trash.tsx</span>
+│   └── <span class="dir">question/</span>
+│       ├── <span class="dir">Edit/</span>               # 问卷编辑
+│       │   ├── <span class="file">index.tsx</span>
+│       │   ├── <span class="file">EditCanvas.tsx</span>
+│       │   ├── <span class="file">EditHeader.tsx</span>
+│       │   ├── <span class="file">ComponentLib.tsx</span>
+│       │   ├── <span class="file">Layers.tsx</span>
+│       │   ├── <span class="file">RightPanel.tsx</span>
+│       │   └── <span class="file">PageSetting.tsx</span>
+│       └── <span class="dir">Stat/</span>              # 问卷统计
+│           ├── <span class="file">index.tsx</span>
+│           ├── <span class="file">ChartStat.tsx</span>
+│           ├── <span class="file">BarDemo.tsx</span>
+│           └── <span class="file">PieDemo.tsx</span>
+│
+├── <span class="dir">store/</span>                    # 状态管理
+│   ├── <span class="file">index.ts</span>
+│   └── <span class="dir">modules/</span>
+│       ├── <span class="file">userReducer.ts</span>
+│       ├── <span class="file">pageInfoReducer.ts</span>
+│       └── <span class="dir">componentsReducer/</span>
+│           ├── <span class="file">index.ts</span>
+│           └── <span class="file">utils.ts</span>
+│
+├── <span class="dir">services/</span>                 # API服务
+│   ├── <span class="file">ajax.ts</span>
+│   ├── <span class="file">user.ts</span>
+│   ├── <span class="file">question.ts</span>
+│   └── <span class="file">stat.ts</span>
+│
+├── <span class="dir">layouts/</span>                   # 布局组件
+│   ├── <span class="file">MainLayout.tsx</span>
+│   ├── <span class="file">ManageLayout.tsx</span>
+│   └── <span class="file">QuestionLayout.tsx</span>
+│
+├── <span class="dir">hooks/</span>                     # 自定义Hooks
+│   ├── <span class="file">useGetUserInfo.ts</span>
+│   ├── <span class="file">useLoadQuestionData.ts</span>
+│   ├── <span class="file">useGetComponentInfo.ts</span>
+│   └── ...
+│
+├── <span class="dir">types/</span>                     # TypeScript类型
+│   ├── <span class="file">questionTypes.ts</span>
+│   └── <span class="file">userTypes.ts</span>
+│
+├── <span class="dir">router/</span>                    # 路由配置
+│   └── <span class="file">index.tsx</span>
+│
+├── <span class="dir">utils/</span>                     # 工具函数
+│   └── <span class="file">user-token.ts</span>
+│
+├── <span class="dir">constants/</span>                # 常量定义
+│   └── <span class="file">index.ts</span>
+│
+├── <span class="file">App.tsx</span>
+└── <span class="file">index.tsx</span>
+</pre>
+            </div>
+        </div>
+
+        <footer>
+            <p>此文档用于面试准备，帮助快速回答项目架构相关问题。</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -38,7 +38,9 @@ export function useLoadQuestionData() {
     dispatch(resetPageInfo({ title, desc, js, css, isPublished }))
 
     // 设置组件信息
-    dispatch(resetComponents({ componentsList, selectedId, copiedComponent: null }))
+    dispatch(
+      resetComponents({ componentsList, selectedId, copiedComponent: null, previewMode: false })
+    )
     dispatch(ActionCreators.clearHistory()) // 最好是清空它
   }, [data])
 

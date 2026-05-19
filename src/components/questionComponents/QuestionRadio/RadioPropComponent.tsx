@@ -4,41 +4,68 @@ import { Form, Input, Checkbox, Select, Button, Space } from 'antd'
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons'
 import { OptionType } from '@/types/questionTypes'
 import { nanoid } from 'nanoid'
+import { useGetComponentInfo } from '@/hooks/useGetComponentInfo'
 
 const RadioPropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioPropsType) => {
-  const { title, isVertical, value, options = [], onChange, isLocked } = props
+  const { title, isVertical, value, options = [], onChange, isLocked, jumpTo = {} } = props
   const [form] = Form.useForm()
+  const { visibleComponnents, selectedId } = useGetComponentInfo()
+
+  // 过滤掉当前组件，获取可选的跳转目标
+  const jumpTargetOptions = visibleComponnents
+    .filter(comp => comp.fe_id !== selectedId)
+    .map(comp => ({
+      value: comp.fe_id,
+      label: comp.title || (comp.props && (comp.props as { text?: string }).text),
+    }))
 
   useEffect(() => {
-    form.setFieldsValue({ title, isVertical, value, options })
-  }, [title, isVertical, value, options])
+    form.setFieldsValue({ title, isVertical, value, options, jumpTo })
+  }, [title, isVertical, value, options, jumpTo])
 
   function handleValuesChange() {
     if (onChange) {
-      // form.setFieldsValue({ title, isVertical, value, options })
       const fieldsValue = form.getFieldsValue() as QuestionRadioPropsType
-      const { options = [] } = fieldsValue
+      const rawOptions = fieldsValue.options || []
 
       // 检查：如果当前选中的值，在现有的 options 数组里不存在了，就把 value 重置
-      const isExist = options.some(opt => opt.value === value)
+      const validOptions = rawOptions.filter(opt => opt && opt.text !== undefined)
+      const isExist = validOptions.some(opt => opt.value === value)
       if (!isExist && value) {
-        // 必须要value不为空时才重置
-        fieldsValue.value = ''
-      }
-      // 删除之后text会变成undefined，需要过滤一下
-      const idx = options.findIndex(opt => opt.text === undefined)
-      if (idx !== -1 && options[idx].value === fieldsValue.value) {
         fieldsValue.value = ''
       }
 
-      fieldsValue.options = options.filter(opt => opt.text !== undefined)
+      // 过滤后的选项
+      const filteredOptions = validOptions.filter(opt => opt.text !== undefined)
 
-      // 新增的选项修改value
-      options.forEach(opt => {
-        if (!opt.value) {
-          opt.value = nanoid()
+      // 重置 value 如果选中的选项已被删除
+      const idx = filteredOptions.findIndex(opt => opt.text === undefined)
+      if (idx !== -1 && filteredOptions[idx].value === fieldsValue.value) {
+        fieldsValue.value = ''
+      }
+
+      // 构建新的选项和 jumpTo
+      const newOptions: OptionType[] = []
+      const newJumpTo: Record<string, string> = { ...jumpTo }
+
+      rawOptions.forEach((opt: OptionType | Record<string, unknown>) => {
+        if (!opt || (opt as OptionType).text === undefined) return
+
+        const option = opt as OptionType
+        if (!option.value) {
+          option.value = nanoid()
+        }
+        newOptions.push({ value: option.value, text: option.text })
+
+        // 直接从 option 对象读取 jumpTo
+        const jumpToVal = (opt as Record<string, unknown>).jumpTo
+        if (jumpToVal && typeof jumpToVal === 'string') {
+          newJumpTo[option.value] = jumpToVal
         }
       })
+
+      fieldsValue.options = newOptions
+      fieldsValue.jumpTo = newJumpTo
 
       onChange(fieldsValue)
     }
@@ -88,6 +115,25 @@ const RadioPropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioProp
                       >
                         <Input placeholder="请输入选项文字..."></Input>
                       </Form.Item>
+                      {/* 跳题配置 - 选择跳转目标 */}
+                      <Select
+                        placeholder="跳转至"
+                        allowClear
+                        style={{ width: 120 }}
+                        options={jumpTargetOptions}
+                        onChange={val => {
+                          const currentOptions = form.getFieldValue('options') || []
+                          if (currentOptions[name]) {
+                            currentOptions[name] = {
+                              ...currentOptions[name],
+                              jumpTo: val || undefined,
+                            }
+                            form.setFieldValue('options', currentOptions)
+                          }
+                          // 触发 handleValuesChange 保存到 Redux
+                          handleValuesChange()
+                        }}
+                      />
                       {/* 当前选项，删除按钮 */}
                       {fields.length > 2 && <MinusCircleOutlined onClick={() => remove(name)} />}
                     </Space>

@@ -10,6 +10,7 @@ import {
   DownOutlined,
   UndoOutlined,
   RedoOutlined,
+  PlayCircleOutlined,
 } from '@ant-design/icons'
 import { useAppDispatch } from '@/store/types'
 import {
@@ -19,6 +20,7 @@ import {
   deleteComponent,
   moveComponentPosition,
   pasteComponent,
+  togglePreviewMode,
 } from '@/store/modules/componentsReducer'
 import { useGetComponentInfo } from '@/hooks/useGetComponentInfo'
 import {
@@ -29,8 +31,14 @@ import { ActionCreators } from 'redux-undo'
 
 const EditToolbar: FC = () => {
   const dispatch = useAppDispatch()
-  const { selectedId, selectedComponent, copiedComponent, visibleComponnents, componentsList } =
-    useGetComponentInfo()
+  const {
+    selectedId,
+    selectedComponent,
+    copiedComponent,
+    visibleComponnents,
+    componentsList,
+    previewMode,
+  } = useGetComponentInfo()
   const { isLocked } = selectedComponent || {}
   const length = visibleComponnents.length
 
@@ -96,9 +104,14 @@ const EditToolbar: FC = () => {
     dispatch(ActionCreators.redo())
   }
 
+  // 预览模式
+  function handlePreview() {
+    dispatch(togglePreviewMode())
+  }
+
   return (
     <Space>
-      <Tooltip title="删除">
+      <Tooltip title="删除-delete/backspace">
         <Button shape="circle" icon={<DeleteOutlined />} onClick={handleDel}></Button>
       </Tooltip>
       <Tooltip title="隐藏">
@@ -112,7 +125,7 @@ const EditToolbar: FC = () => {
           type={isLocked ? 'primary' : 'default'}
         ></Button>
       </Tooltip>
-      <Tooltip title="复制">
+      <Tooltip title="复制-ctrl+c">
         <Button
           shape="circle"
           icon={<CopyOutlined />}
@@ -120,7 +133,7 @@ const EditToolbar: FC = () => {
           disabled={selectedFlag}
         ></Button>
       </Tooltip>
-      <Tooltip title="粘贴">
+      <Tooltip title="粘贴-ctrl+v">
         <Button
           shape="circle"
           icon={<BlockOutlined />}
@@ -128,7 +141,7 @@ const EditToolbar: FC = () => {
           disabled={copiedComponent === null}
         ></Button>
       </Tooltip>
-      <Tooltip title="上移">
+      <Tooltip title="上移-uparrow">
         <Button
           shape="circle"
           icon={<UpOutlined />}
@@ -136,7 +149,7 @@ const EditToolbar: FC = () => {
           disabled={isFirst || selectedFlag}
         ></Button>
       </Tooltip>
-      <Tooltip title="下移">
+      <Tooltip title="下移-downarrow">
         <Button
           shape="circle"
           icon={<DownOutlined />}
@@ -144,11 +157,19 @@ const EditToolbar: FC = () => {
           disabled={isLast || selectedFlag}
         ></Button>
       </Tooltip>
-      <Tooltip title="撤销">
+      <Tooltip title="撤销-ctrl+z">
         <Button shape="circle" icon={<UndoOutlined />} onClick={handleUndo}></Button>
       </Tooltip>
-      <Tooltip title="重做">
+      <Tooltip title="重做-ctrl+y/ctrl+shift+z">
         <Button shape="circle" icon={<RedoOutlined />} onClick={handleRedo}></Button>
+      </Tooltip>
+      <Tooltip title={previewMode ? '退出预览' : '预览模式'}>
+        <Button
+          shape="circle"
+          icon={<PlayCircleOutlined />}
+          onClick={handlePreview}
+          type={previewMode ? 'primary' : 'default'}
+        ></Button>
       </Tooltip>
     </Space>
   )

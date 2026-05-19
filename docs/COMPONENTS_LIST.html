@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件功能清单 - 面试版</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 30px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+        .module-card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        .module-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .module-title .icon {
+            font-size: 1.5rem;
+        }
+        .module-desc {
+            color: #666;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        th {
+            background: #f5f7fa;
+            color: #333;
+            font-weight: 600;
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: #fafbff;
+        }
+        .file-name {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: #f0f0f0;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #d63384;
+        }
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .tag-page { background: #e3f2fd; color: #1976d2; }
+        .tag-component { background: #f3e5f5; color: #7b1fa2; }
+        .tag-hook { background: #e8f5e9; color: #388e3c; }
+        .tag-store { background: #fff3e0; color: #f57c00; }
+        .tag-service { background: #fce4ec; color: #c2185b; }
+        .tag-utils { background: #e0f2f1; color: #00796b; }
+        .tag-layout { background: #f1f8e9; color: #689f38; }
+        .question-comp {
+            background: #fff8e1;
+            color: #f57f17;
+        }
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 组件功能清单 - 按模块分类</h1>
+
+        <!-- 用户模块 -->
+        <div class="module-card">
+            <h2 class="module-title"><span class="icon">👤</span>用户模块</h2>
+            <div class="module-desc">负责用户登录、注册、个人信息管理等功能</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">文件</th>
+                        <th style="width: 15%">类型</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="file-name">pages/Login.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>登录页面，包含用户名/密码输入、登录按钮、表单验证</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/Register.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>注册页面，包含用户信息填写、密码确认、注册表单验证</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/UserInfo.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>用户信息展示组件，用于页面头部显示当前登录用户信息</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">services/user.ts</span></td>
+                        <td><span class="tag tag-service">Service</span></td>
+                        <td>用户相关 API 接口封装：登录、注册、获取用户信息</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">store/modules/userReducer.ts</span></td>
+                        <td><span class="tag tag-store">Store</span></td>
+                        <td>Redux 用户状态管理：存储登录用户信息、Token 等</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">hooks/useGetUserInfo.ts</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>获取当前用户信息的自定义 Hook</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">hooks/useLoadUserData.ts</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>页面加载时自动获取用户数据的 Hook</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">utils/user-token.ts</span></td>
+                        <td><span class="tag tag-utils">Utils</span></td>
+                        <td>Token 工具函数：获取、设置、清除本地存储的 Token</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">types/userTypes.ts</span></td>
+                        <td><span class="tag tag-utils">Types</span></td>
+                        <td>用户相关 TypeScript 类型定义</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 问卷管理模块 -->
+        <div class="module-card">
+            <h2 class="module-title"><span class="icon">📁</span>问卷管理模块</h2>
+            <div class="module-desc">负责问卷的列表展示、星标收藏、回收站管理等功能</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">文件</th>
+                        <th style="width: 15%">类型</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="file-name">pages/manage/list.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>问卷列表页面，展示用户创建的所有问卷，支持搜索、分页</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/manage/Star.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>星标问卷页面，展示用户收藏/标星的问卷</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/manage/Trash.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>回收站页面，展示已删除的问卷，支持彻底删除或恢复</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">layouts/ManageLayout.tsx</span></td>
+                        <td><span class="tag tag-layout">Layout</span></td>
+                        <td>管理模块公共布局，包含左侧菜单导航（列表/星标/回收站）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/QuestionCard.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>问卷卡片组件，展示问卷标题、创建时间、状态等信息</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/ListPage.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>列表页公共组件，封装分页逻辑和加载状态</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/ListSearch.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>搜索组件，提供问卷标题搜索功能</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">services/question.ts</span></td>
+                        <td><span class="tag tag-service">Service</span></td>
+                        <td>问卷 CRUD 接口封装：创建、删除、复制、列表查询等</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">hooks/useLoadQuestionListData.ts</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>加载问卷列表数据的 Hook，包含分页、搜索逻辑</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 问卷编辑器模块 -->
+        <div class="module-card">
+            <h2 class="module-title"><span class="icon">✏️</span>问卷编辑器模块</h2>
+            <div class="module-desc">核心模块：可视化问卷编辑、拖拽排序、属性配置、图层管理等</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">文件</th>
+                        <th style="width: 15%">类型</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/index.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>问卷编辑器主页面，协调各面板组件，集成 Redux 状态</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/EditCanvas.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>编辑画布，渲染问卷组件，支持点击选中、拖拽排序</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/EditHeader.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>编辑页头部，包含保存、发布、预览等操作按钮</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/EditToolbar.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>编辑工具栏，提供撤销、重做、预览等快捷操作</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/LeftPanel.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>左侧面板，包含组件库和图层面板</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/ComponentLib.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>组件库面板，展示可添加的问卷组件列表（标题/输入框/单选等）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/Layers.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>图层面板，展示组件层级，支持显示/隐藏、锁定操作</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/RightPanel.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>右侧面板，集成属性编辑和页面设置</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/RightPropComponent.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>右侧属性组件，根据选中组件动态渲染对应的属性编辑面板</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Edit/PageSetting.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>页面设置面板，编辑问卷标题、描述等基本信息</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">layouts/QuestionLayout.tsx</span></td>
+                        <td><span class="tag tag-layout">Layout</span></td>
+                        <td>问卷编辑页公共布局，划分左/中/右三个区域</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/DragSortable/SortableContainer.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>拖拽容器组件，基于 @dnd-kit 封装，支持拖拽排序功能</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/DragSortable/SortableItem.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>拖拽项组件，封装拖拽交互逻辑和样式</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">hooks/useBindCanvasKeyPress.ts</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>绑定画布快捷键（Ctrl+C 复制、Ctrl+V 粘贴、Delete 删除）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">hooks/useLoadQuestionData.ts</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>加载问卷数据到 Redux 的 Hook</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">hooks/useGetComponentInfo.ts</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>获取当前选中组件信息的 Hook</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">hooks/useGetPageInfo.ts</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>获取页面基本信息的 Hook</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">store/modules/componentsReducer/</span></td>
+                        <td><span class="tag tag-store">Store</span></td>
+                        <td>问卷组件状态管理，支持撤销/重做、组件增删改、拖拽排序</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">store/modules/pageInfoReducer.ts</span></td>
+                        <td><span class="tag tag-store">Store</span></td>
+                        <td>页面信息状态管理：问卷标题、描述等</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 25px; color: #667eea;">📦 问卷组件库（7种组件）</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">组件</th>
+                        <th style="width: 15%">类型</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="file-name">QuestionTitle</span></td>
+                        <td><span class="tag question-comp">QuestionComp</span></td>
+                        <td>标题组件，用于问卷大标题</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">QuestionInput</span></td>
+                        <td><span class="tag question-comp">QuestionComp</span></td>
+                        <td>单行输入框，收集用户短文本输入</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">QuestionTextarea</span></td>
+                        <td><span class="tag question-comp">QuestionComp</span></td>
+                        <td>多行文本域，收集用户长文本输入</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">QuestionRadio</span></td>
+                        <td><span class="tag question-comp">QuestionComp</span></td>
+                        <td>单选框，收集用户单选答案</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">QuestionCheckbox</span></td>
+                        <td><span class="tag question-comp">QuestionComp</span></td>
+                        <td>多选框，收集用户多选答案</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">QuestionParagraph</span></td>
+                        <td><span class="tag question-comp">QuestionComp</span></td>
+                        <td>段落文本，展示说明性文字</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">QuestionInfo</span></td>
+                        <td><span class="tag question-comp">QuestionComp</span></td>
+                        <td>信息展示，图片/文字等静态内容</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 问卷统计模块 -->
+        <div class="module-card">
+            <h2 class="module-title"><span class="icon">📊</span>问卷统计模块</h2>
+            <div class="module-desc">负责问卷数据统计、图表展示、二维码生成等功能</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">文件</th>
+                        <th style="width: 15%">类型</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="file-name">pages/question/Stat/index.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>问卷统计主页面，汇总展示统计结果</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Stat/StatHeader.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>统计页头部，包含问卷标题、发布时间、二维码等</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Stat/ChartStat.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>图表统计组件，基于 recharts 渲染统计图表</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Stat/BarDemo.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>柱状图演示组件，展示单选题/多选题统计结果</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Stat/PieDemo.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>饼图演示组件，展示选项占比分布</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Stat/ComponentList.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>组件列表，展示问卷中所有可统计的组件</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/question/Stat/PageStat.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>页面统计概览，包含答卷数量、提交率等汇总数据</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">services/stat.ts</span></td>
+                        <td><span class="tag tag-service">Service</span></td>
+                        <td>统计相关 API 接口封装：获取问卷统计数据</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">types/questionTypes.ts</span></td>
+                        <td><span class="tag tag-utils">Types</span></td>
+                        <td>问卷和统计相关 TypeScript 类型定义</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 公共模块 -->
+        <div class="module-card">
+            <h2 class="module-title"><span class="icon">🔧</span>公共模块</h2>
+            <div class="module-desc">全局共享的组件、服务和工具</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">文件</th>
+                        <th style="width: 15%">类型</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="file-name">layouts/MainLayout.tsx</span></td>
+                        <td><span class="tag tag-layout">Layout</span></td>
+                        <td>主布局，包含 Logo、用户信息、公共导航等</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/Logo.tsx</span></td>
+                        <td><span class="tag tag-component">Component</span></td>
+                        <td>Logo 组件，应用标识</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">services/ajax.ts</span></td>
+                        <td><span class="tag tag-service">Service</span></td>
+                        <td>Axios 封装，包含拦截器、Token 管理、错误处理</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">store/index.ts</span></td>
+                        <td><span class="tag tag-store">Store</span></td>
+                        <td>Redux Store 入口，配置 undoable 等中间件</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">router/index.tsx</span></td>
+                        <td><span class="tag tag-utils">Router</span></td>
+                        <td>路由配置，使用 HashRouter 和懒加载</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">constants/index.ts</span></td>
+                        <td><span class="tag tag-utils">Constants</span></td>
+                        <td>全局常量定义</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">_mock/index.ts</span></td>
+                        <td><span class="tag tag-utils">Mock</span></td>
+                        <td>Mock 数据配置</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">components/questionComponents/index.ts</span></td>
+                        <td><span class="tag tag-utils">Utils</span></td>
+                        <td>问卷组件统一入口，提供 getComponentConfByType 函数</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/Home.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>首页</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">pages/NotFound.tsx</span></td>
+                        <td><span class="tag tag-page">Page</span></td>
+                        <td>404 页面</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 自定义 Hooks 模块 -->
+        <div class="module-card" style="max-width: 900px; margin: 0 auto 25px;">
+            <h2 class="module-title"><span class="icon">⚓</span>自定义 Hooks</h2>
+            <div class="module-desc">封装业务逻辑的 React Hooks，用于数据加载、状态获取、快捷键绑定等</div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%">Hook 名称</th>
+                        <th style="width: 15%">模块归属</th>
+                        <th>功能说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="file-name">useGetUserInfo</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>从 Redux store 中获取当前用户信息（username、nickname）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">useLoadUserData</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>页面初始化时自动加载用户数据，如果未登录则请求后端获取，登录后将用户信息存入 Redux</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">useNavPage</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>路由守卫 Hook，根据用户登录状态自动跳转：已登录访问登录页→跳转到管理列表；未登录访问需要登录的页面→跳转到登录页</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">useLoadQuestionData</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>问卷编辑器页面加载时，根据 URL 中的问卷 ID 请求后端 API 获取问卷数据，然后重置 Redux 中的 components（组件列表）和 pageInfo（页面信息），并清空撤销历史</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">useLoadQuestionListData</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>问卷管理列表页核心 Hook，监听 URL 搜索参数变化（keyword、page、pageSize），自动请求后端获取问卷列表数据，支持分页和搜索</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">useGetComponentInfo</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>获取当前问卷编辑器中的组件信息，包括：componentsList（组件列表）、selectedId（选中ID）、selectedComponent（选中组件）、visibleComponnents（可见组件）</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">useGetPageInfo</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>获取问卷页面基本信息（标题、描述、JS、CSS、是否发布等），用于编辑器页面设置和发布</td>
+                    </tr>
+                    <tr>
+                        <td><span class="file-name">useBindCanvasKeyPress</span></td>
+                        <td><span class="tag tag-hook">Hook</span></td>
+                        <td>编辑器画布快捷键绑定，使用 ahooks 的 useKeyPress 实现：
+                            <ul style="margin-top:5px;padding-left:15px;">
+                                <li>Delete/Backspace：删除选中组件</li>
+                                <li>Ctrl+C：复制选中组件</li>
+                                <li>Ctrl+V：粘贴组件</li>
+                                <li>↑/↓：选中上一个/下一个组件</li>
+                                <li>Ctrl+Z：撤销</li>
+                                <li>Ctrl+Y / Ctrl+Shift+Z：重做</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="footer">
+            <p>用于面试快速浏览项目结构，回答"这个项目有哪些组件/页面"等问题</p>
+        </div>
+    </div>
+</body>
+</html>

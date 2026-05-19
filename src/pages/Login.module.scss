@@ -4,5 +4,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
+
+  .card {
+    padding: 40px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    min-width: 400px;
+
+    .title {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+  }
 }

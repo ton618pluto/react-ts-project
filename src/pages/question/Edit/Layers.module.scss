@@ -9,15 +9,12 @@
     }
 
     .selected {
-        color: #1890ff;
+        color: var(--color-primary);
     }
 
     .handler {
         width: 50px;
         text-align: end;
-        // display: flex;
-        // justify-content: space-around;
-        // background-color: skyblue;
 
         .btn {
             opacity: .2;

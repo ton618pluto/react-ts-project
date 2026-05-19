@@ -50,6 +50,7 @@ export type QuestionRadioPropsType = {
   options?: OptionType[]
   isLocked?: boolean
   onChange?: (props: QuestionRadioPropsType) => void
+  jumpTo?: Record<string, string> // key: 选项value, value: 目标组件fe_id
 }
 
 export type CheckboxOptionType = {

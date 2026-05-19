@@ -14,6 +14,7 @@ export function useGetComponentInfo() {
     componentsList = [],
     selectedId,
     copiedComponent,
+    previewMode,
   } = useAppSelector(state => state.components.present)
 
   const selectedComponent = componentsList.find(item => item.fe_id === selectedId)
@@ -25,5 +26,6 @@ export function useGetComponentInfo() {
     selectedId,
     copiedComponent,
     visibleComponnents,
+    previewMode,
   }
 }
