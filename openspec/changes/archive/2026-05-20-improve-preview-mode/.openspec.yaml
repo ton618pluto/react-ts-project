@@ -1,0 +1,7 @@
+schema: openspec.v1
+name: 2026-05-20-improve-preview-mode
+version: 1.0.0
+created: 2026-05-20
+capabilities:
+  - preview-mode-improvements
+status: active

@@ -1,39 +1,70 @@
-.canvas{
-    overflow: auto;
+.canvas {
+  overflow: auto;
 
-    .component-wrapper{
-        margin: 12px;
-        padding: 12px;
-        border: 1px solid var(--color-border);
-        border-radius: var(--border-radius);
-        transition: border-color 0.2s, box-shadow 0.2s;
+  .preview-banner {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--color-primary), #764ba2);
+    color: #fff;
+    font-size: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
-        &:hover{
-            border-color: var(--color-primary);
-            box-shadow: var(--shadow-sm);
-        }
+    .exit-btn {
+      color: #fff;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.9;
+      }
     }
+  }
 
-    .component{
-        pointer-events: none;
-    }
+  .component-wrapper {
+    margin: 12px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    transition: border-color 0.2s, box-shadow 0.2s;
 
-    &.preview-mode .component-wrapper{
-        pointer-events: auto;
+    &:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
     }
+  }
 
-    &.preview-mode .component{
-        pointer-events: auto;
-        position: relative;
-        z-index: 1;
-    }
+  .component {
+    pointer-events: none;
+  }
+
+  &.preview-mode {
+    background-color: #f8f9ff;
+    border: 2px dashed var(--color-primary);
+  }
+
+  &.preview-mode .component-wrapper {
+    pointer-events: auto;
+    border-color: var(--color-primary);
+  }
+
+  &.preview-mode .component {
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+  }
 }
 
-.selected{
-    border-color: var(--color-primary) !important;
-    box-shadow: var(--shadow-sm);
+.selected {
+  border-color: var(--color-primary) !important;
+  box-shadow: var(--shadow-sm);
 }
 
-.locked{
-    opacity: 0.5;
+.locked {
+  opacity: 0.5;
 }

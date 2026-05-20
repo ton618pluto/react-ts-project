@@ -19,7 +19,11 @@
       "Bash(openspec list *)",
       "Bash(python3 \"C:/Users/pluto/.claude/skills/ui-ux-pro-max/scripts/search.py\" \"fresh light green mint\" --domain color)",
       "Bash(openspec new *)",
-      "Bash(openspec status *)"
+      "Bash(openspec status *)",
+      "Bash(npx eslint *)",
+      "Bash(npx prettier *)",
+      "Bash(mkdir -p openspec/changes/archive)",
+      "Bash(mv openspec/changes/2026-05-20-improve-preview-mode openspec/changes/archive/2026-05-20-improve-preview-mode)"
     ]
   }
 }

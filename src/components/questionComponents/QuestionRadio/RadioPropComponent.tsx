@@ -19,8 +19,15 @@ const RadioPropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioProp
       label: comp.title || (comp.props && (comp.props as { text?: string }).text),
     }))
 
+  // 同步表单值，确保 options 中的 jumpTo 被正确设置
   useEffect(() => {
-    form.setFieldsValue({ title, isVertical, value, options, jumpTo })
+    const formValues = form.getFieldsValue()
+    // 重建 options，把 jumpTo 设置到每个选项中
+    const syncedOptions = options.map((opt, idx) => ({
+      ...opt,
+      jumpTo: formValues.options?.[idx]?.jumpTo || opt.value ? jumpTo[opt.value] : undefined,
+    }))
+    form.setFieldsValue({ title, isVertical, value, options: syncedOptions })
   }, [title, isVertical, value, options, jumpTo])
 
   function handleValuesChange() {
@@ -121,6 +128,7 @@ const RadioPropComponent: FC<QuestionRadioPropsType> = (props: QuestionRadioProp
                         allowClear
                         style={{ width: 120 }}
                         options={jumpTargetOptions}
+                        value={form.getFieldValue(['options', name, 'jumpTo'])}
                         onChange={val => {
                           const currentOptions = form.getFieldValue('options') || []
                           if (currentOptions[name]) {

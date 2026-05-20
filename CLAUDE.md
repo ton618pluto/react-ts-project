@@ -8,5 +8,5 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - 回答时使用中文
 - 找 skill 时先在本地项目的.claude目录找，找不到再去全局的 skill 找，路径：`C:\Users\pluto\.claude\skills\`
 - 文档和注释以中文为主
-- 如果这次任务有涉及修改或新增或删除文件，按文件类别列出来！
+- 如果这次任务有涉及修改或新增或删除文件，按文件类别列出来！（最高优先级）
 - 回答完毕时加个happy ending!

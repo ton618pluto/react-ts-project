@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Space, Button, Tooltip } from 'antd'
+import { Space, Button, Tooltip, message } from 'antd'
 import {
   DeleteOutlined,
   EyeInvisibleOutlined,
@@ -106,6 +106,9 @@ const EditToolbar: FC = () => {
 
   // 预览模式
   function handlePreview() {
+    if (!previewMode) {
+      message.info('已进入预览模式，点击右上角退出')
+    }
     dispatch(togglePreviewMode())
   }
 
@@ -163,13 +166,15 @@ const EditToolbar: FC = () => {
       <Tooltip title="重做-ctrl+y/ctrl+shift+z">
         <Button shape="circle" icon={<RedoOutlined />} onClick={handleRedo}></Button>
       </Tooltip>
-      <Tooltip title={previewMode ? '退出预览' : '预览模式'}>
+      <Tooltip title={previewMode ? '退出预览' : '预览问卷'}>
         <Button
           shape="circle"
           icon={<PlayCircleOutlined />}
           onClick={handlePreview}
           type={previewMode ? 'primary' : 'default'}
-        ></Button>
+        >
+          {previewMode ? '退出预览' : '预览'}
+        </Button>
       </Tooltip>
     </Space>
   )

@@ -1,0 +1,8 @@
+{
+  "projectdocs": {
+    "paths": [
+      "CLAUDE.md"
+    ],
+    "load": "always"
+  }
+}

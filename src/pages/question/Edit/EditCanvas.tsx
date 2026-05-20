@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent, useMemo, useState } from 'react'
-import { Spin } from 'antd'
+import { Spin, message } from 'antd'
 import SortableContainer from '@/components/DragSortable/SortableContainer'
 import SortableItem from '@/components/DragSortable/SortableItem'
 import styles from './EditCanvas.module.scss'
@@ -7,7 +7,11 @@ import { useGetComponentInfo } from '@/hooks/useGetComponentInfo'
 import { ComponentInfoType, QuestionRadioPropsType } from '@/types/questionTypes'
 import { getComponentConfByType } from '@/components/questionComponents'
 import { useAppDispatch } from '@/store/types'
-import { changeSelectedId, moveComponentPosition } from '@/store/modules/componentsReducer'
+import {
+  changeSelectedId,
+  moveComponentPosition,
+  togglePreviewMode,
+} from '@/store/modules/componentsReducer'
 import classNames from 'classnames'
 import { useBindCanvasKeyPress } from '@/hooks/useBindCanvasKeyPress'
 
@@ -145,6 +149,12 @@ const EditCanvas: FC<PropsType> = (props: PropsType) => {
   if (previewMode) {
     return (
       <div className={`${styles.canvas} ${styles['preview-mode']}`}>
+        <div className={styles['preview-banner']}>
+          <span>您正在预览问卷</span>
+          <span className={styles['exit-btn']} onClick={() => dispatch(togglePreviewMode())}>
+            点击退出预览
+          </span>
+        </div>
         <PreviewCanvas componentsList={componentsList}></PreviewCanvas>
       </div>
     )
