@@ -33,9 +33,9 @@
       position: absolute;
       width: 433px;
       height: 600px;
-      top: 0%;
+      top: 0;
       left: 50%;
-      transform: translate(-50%, 0%);
+      transform: translateX(-50%);
       background-color: var(--color-bg-card);
       overflow: auto;
       border-radius: var(--border-radius);
@@ -50,5 +50,29 @@
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-sm);
     margin-left: var(--spacing-lg);
+  }
+}
+
+.preview {
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--spacing-lg) 0;
+
+  .center {
+    max-width: 640px;
+    overflow: visible;
+
+    .canvas-content {
+      position: relative;
+      top: auto;
+      left: auto;
+      width: min(100%, 480px);
+      min-height: 600px;
+      height: auto;
+      margin: 0 auto;
+      transform: none;
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+    }
   }
 }

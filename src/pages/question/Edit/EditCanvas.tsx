@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent, useMemo, useState } from 'react'
-import { Spin, message } from 'antd'
+import { Spin } from 'antd'
 import SortableContainer from '@/components/DragSortable/SortableContainer'
 import SortableItem from '@/components/DragSortable/SortableItem'
 import styles from './EditCanvas.module.scss'
@@ -7,11 +7,7 @@ import { useGetComponentInfo } from '@/hooks/useGetComponentInfo'
 import { ComponentInfoType, QuestionRadioPropsType } from '@/types/questionTypes'
 import { getComponentConfByType } from '@/components/questionComponents'
 import { useAppDispatch } from '@/store/types'
-import {
-  changeSelectedId,
-  moveComponentPosition,
-  togglePreviewMode,
-} from '@/store/modules/componentsReducer'
+import { changeSelectedId, moveComponentPosition } from '@/store/modules/componentsReducer'
 import classNames from 'classnames'
 import { useBindCanvasKeyPress } from '@/hooks/useBindCanvasKeyPress'
 
@@ -29,7 +25,6 @@ function getComponent(componentInfo: ComponentInfoType) {
   return <Component {...props}></Component>
 }
 
-// 预览画布，处理跳题逻辑 - 显示所有非跳过题目
 function PreviewCanvas({ componentsList }: { componentsList: ComponentInfoType[] }) {
   const [selectedValues, setSelectedValues] = useState<Record<string, string>>({})
 
@@ -37,7 +32,6 @@ function PreviewCanvas({ componentsList }: { componentsList: ComponentInfoType[]
     return <div style={{ textAlign: 'center', color: 'var(--color-text-secondary)' }}>暂无题目</div>
   }
 
-  // 根据已选择的值计算哪些组件需要显示
   const visibleComponents = useMemo(() => {
     const result: ComponentInfoType[] = []
 
@@ -50,7 +44,6 @@ function PreviewCanvas({ componentsList }: { componentsList: ComponentInfoType[]
       const { defaultProps } = compConf
       const mergedProps = { ...defaultProps, ...componentProps }
 
-      // 如果是单选题且有选择值，查 jumpTo
       if (type === 'questionRadio') {
         const jumpTo = (mergedProps as QuestionRadioPropsType).jumpTo
         const selectedValue = selectedValues[fe_id]
@@ -86,7 +79,6 @@ function PreviewCanvas({ componentsList }: { componentsList: ComponentInfoType[]
         const { Component, defaultProps } = compConf
         const mergedProps = { ...defaultProps, ...componentProps }
 
-        // 如果是单选题，处理 onChange
         if (type === 'questionRadio') {
           const radioProps = mergedProps as QuestionRadioPropsType
           const curValue = selectedValues[fe_id] || radioProps.value
@@ -120,11 +112,10 @@ function PreviewCanvas({ componentsList }: { componentsList: ComponentInfoType[]
   )
 }
 
-const EditCanvas: FC<PropsType> = (props: PropsType) => {
+const EditCanvas: FC<PropsType> = props => {
   const { componentsList, selectedId, previewMode } = useGetComponentInfo()
   const dispatch = useAppDispatch()
 
-  // 绑定快捷键
   useBindCanvasKeyPress()
 
   function handleClick(e: MouseEvent, id: string) {
@@ -145,16 +136,9 @@ const EditCanvas: FC<PropsType> = (props: PropsType) => {
     })
   }, [componentsList])
 
-  // 预览模式
   if (previewMode) {
     return (
       <div className={`${styles.canvas} ${styles['preview-mode']}`}>
-        <div className={styles['preview-banner']}>
-          <span>您正在预览问卷</span>
-          <span className={styles['exit-btn']} onClick={() => dispatch(togglePreviewMode())}>
-            点击退出预览
-          </span>
-        </div>
         <PreviewCanvas componentsList={componentsList}></PreviewCanvas>
       </div>
     )

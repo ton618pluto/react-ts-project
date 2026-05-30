@@ -1,31 +1,6 @@
 .canvas {
   overflow: auto;
 
-  .preview-banner {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    padding: 12px;
-    background: linear-gradient(135deg, var(--color-primary), #764ba2);
-    color: #fff;
-    font-size: 14px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-
-    .exit-btn {
-      color: #fff;
-      text-decoration: underline;
-      cursor: pointer;
-
-      &:hover {
-        opacity: 0.9;
-      }
-    }
-  }
-
   .component-wrapper {
     margin: 12px;
     padding: 12px;
@@ -44,13 +19,16 @@
   }
 
   &.preview-mode {
-    background-color: #f8f9ff;
-    border: 2px dashed var(--color-primary);
+    min-height: 100%;
+    background: linear-gradient(180deg, #f8fffe 0%, #f4f8ff 100%);
+    border: 1px solid var(--color-border);
   }
 
   &.preview-mode .component-wrapper {
     pointer-events: auto;
     border-color: var(--color-primary);
+    background-color: rgba(255, 255, 255, 0.92);
+    box-shadow: var(--shadow-sm);
   }
 
   &.preview-mode .component {
